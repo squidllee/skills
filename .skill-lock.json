@@ -198,6 +198,105 @@
       "skillFolderHash": "10e4d83f2f34cf226cf9819ab6b4dd6f8d7a0e6a",
       "installedAt": "2026-09-04T00:39:29.629Z",
       "updatedAt": "2026-09-04T00:39:29.629Z"
+    },
+    "address-findings": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/address-findings/SKILL.md",
+      "skillFolderHash": "cc56ec0687d75c70c49201f1dd6fddeeb3ddface",
+      "installedAt": "2026-09-09T17:05:16.574Z",
+      "updatedAt": "2026-09-09T17:05:16.574Z"
+    },
+    "explain": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/explain/SKILL.md",
+      "skillFolderHash": "f391ea0a22d1db2b1ea6ac882a99ae0ca8391e24",
+      "installedAt": "2026-09-09T17:05:16.627Z",
+      "updatedAt": "2026-09-09T17:05:16.627Z"
+    },
+    "recall": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/recall/SKILL.md",
+      "skillFolderHash": "9bbaea3fcdc85618082c6c830698958f1be60b39",
+      "installedAt": "2026-09-09T17:05:16.674Z",
+      "updatedAt": "2026-09-09T17:05:16.674Z"
+    },
+    "replay": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/replay/SKILL.md",
+      "skillFolderHash": "b4559e863d6a182627cd8f68c70bc15bf7779655",
+      "installedAt": "2026-09-09T17:05:16.711Z",
+      "updatedAt": "2026-09-09T17:05:16.711Z"
+    },
+    "review": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/review/SKILL.md",
+      "skillFolderHash": "14986025b894d12e48918788df939b1bae4e9626",
+      "installedAt": "2026-09-09T17:05:16.737Z",
+      "updatedAt": "2026-09-09T17:05:16.737Z"
+    },
+    "session-crosslink": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/session-crosslink/SKILL.md",
+      "skillFolderHash": "8f78147aa129033c2e7619941d4234fa0c622db8",
+      "installedAt": "2026-09-09T17:05:16.765Z",
+      "updatedAt": "2026-09-09T17:05:16.765Z"
+    },
+    "session-handoff": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/session-handoff/SKILL.md",
+      "skillFolderHash": "f12acc7c40a11285f94fe79d31efbbd88807489c",
+      "installedAt": "2026-09-09T17:05:16.786Z",
+      "updatedAt": "2026-09-09T17:05:16.786Z"
+    },
+    "session-to-skill": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/session-to-skill/SKILL.md",
+      "skillFolderHash": "57da69fd3a7abc36118af54d035f3b96c077935b",
+      "installedAt": "2026-09-09T17:05:16.805Z",
+      "updatedAt": "2026-09-09T17:05:16.805Z"
+    },
+    "teach": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/teach/SKILL.md",
+      "skillFolderHash": "0f1a2661a3078f873ffb197b8d9861b2d1a926cb",
+      "installedAt": "2026-09-09T17:05:16.833Z",
+      "updatedAt": "2026-09-09T17:05:16.833Z"
+    },
+    "using-entire": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/using-entire/SKILL.md",
+      "skillFolderHash": "10d12cbc6743a1f833d73f88b94c2c47a4cc32d5",
+      "installedAt": "2026-09-09T17:05:16.854Z",
+      "updatedAt": "2026-09-09T17:05:16.854Z"
+    },
+    "what-happened": {
+      "source": "entireio/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/entireio/skills.git",
+      "skillPath": "skills/what-happened/SKILL.md",
+      "skillFolderHash": "fd054cd1ff17ff58f2e95685b89f9852a9326d44",
+      "installedAt": "2026-09-09T17:05:16.874Z",
+      "updatedAt": "2026-09-09T17:05:16.874Z"
     }
   },
   "dismissed": {
