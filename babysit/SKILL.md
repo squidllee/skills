@@ -15,7 +15,7 @@ Keep an eye on changes to 'main' and rebase when needed. If an overlapping PR ma
 
 If a review bot leaves feedback you believe is not worth addressing, reply with a written reason and resolve the comment. Use any available comment writing skill for every comment posted on my behalf.
 
-Screenshots and videos help as well. If there is a file upload skill available, use it, if not then you can use the 'here-now' skill if its installed. If there is no skill available to upload a file, stop and tell the user. Never install a skill by yourself or report that something was uploaded when it wasn't.
+Screenshots and videos help as well. If there is a dedicated file upload skill available, use it, if not then you can use the 'here-now' skill if its installed to embed images into the pr description. If there is no skill available to upload a file, stop and tell the user. Never install a skill by yourself or report that something was uploaded when it wasn't.
 
 Do not let review feedback expand the pr beyond the user's original goal. Address real shortcomings, but avoid scope creep.
 
