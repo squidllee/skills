@@ -1,13 +1,13 @@
 ---
 name: transitions-polish
-description: Polish and refine existing motion against the transitions.dev motion-token scale — duration, distance, scale, blur, and easing — plus the rules for WHEN each token applies (open/close asymmetry, hover-in vs hover-out, stagger offsets, and intent delays). An add-on to the transitions-dev skill, focused on tuning what already animates rather than adding new transitions. Use when the user asks to "polish my transitions", "refine the motion", "tune the timing / easing", "make the animation feel better / less janky", "tighten the durations", "fix the stagger", "align to the motion tokens", "audit the motion", "review my animations", "scan for ad-hoc transitions", "tokenize my animations", or runs the commands transitions review or transitions polish. Also drives the Refine panel's Small refinement feature. Triggers on "motion polish", "transition polish", "refine motion", "timing feels off", "too slow / too fast", "stagger", "delay", "open close timing", "hover in out".
+description: Polish and refine existing motion against the transitions.dev motion-token scale — duration, distance, scale, blur, and easing — plus the rules for WHEN each token applies (open/close asymmetry, hover-in vs hover-out, stagger offsets, and intent delays). Focused on tuning motion that already exists rather than adding new transitions. Use when the user asks to "polish my transitions", "refine the motion", "tune the timing / easing", "make the animation feel better / less janky", "tighten the durations", "fix the stagger", "align to the motion tokens", "audit the motion", "review my animations", "scan for ad-hoc transitions", "tokenize my animations", or runs the commands transitions review or transitions polish. Also drives the Refine panel's Small refinement feature. Triggers on "motion polish", "transition polish", "refine motion", "timing feels off", "too slow / too fast", "stagger", "delay", "open close timing", "hover in out".
 ---
 
 # Transitions Polish
 
-An **add-on** to the [`transitions-dev`](../transitions-dev/SKILL.md) skill. Where `transitions-dev` installs whole transitions, this skill **polishes motion that already exists**: it scans the five motion-token dimensions — **duration, distance, scale, blur, easing** — and suggests the token each value should reference, plus the higher-order rules for *when* a value is right (open/close asymmetry, hover in/out, stagger, delay).
+This skill **polishes motion that already exists**: it scans the five motion-token dimensions — **duration, distance, scale, blur, easing** — and suggests the token each value should reference, plus the higher-order rules for *when* a value is right (open/close asymmetry, hover in/out, stagger, delay).
 
-Install it alongside `transitions-dev`, or on its own — the token values are restated below so this skill can audit a project standalone. When it is installed, the transitions.dev **Refine panel** automatically feeds these rules into every **Small refinement** job.
+Install it on its own — the token values are restated below so this skill can audit a project standalone. When it is installed, the transitions.dev **Refine panel** automatically feeds these rules into every **Small refinement** job.
 
 ## Core doctrine: match on usage, never on the nearest number
 
@@ -15,7 +15,7 @@ A value is not "wrong" because it is off by 20ms. It is wrong when it does not f
 
 ## The five dimensions
 
-Same scale the [transitions.dev](https://transitions.dev) Motion tokens tab exposes. Copy this skill's [`_root.css`](./_root.css) into your project once; once imported, reference any token as `var(--…)`. The `transitions-dev` transitions ship literal values, so they work without these tokens — install this skill to tune them against the shared scale.
+Same scale the [transitions.dev](https://transitions.dev) Motion tokens tab exposes. Copy this skill's [`_root.css`](./_root.css) into your project once; once imported, reference any token as `var(--…)`. Install this skill to tune hardcoded values against the shared scale.
 
 ### Durations
 
@@ -109,7 +109,7 @@ The skill exposes two namespaced verbs. Every command starts with `transitions` 
 **Behaviour:**
 
 1. **Scan the whole project** — not just stylesheets, but inline `style=` / CSS-in-JS, styled-components, `<style>` blocks, and Tailwind arbitrary values (`duration-[300ms]`, `[transition-timing-function:...]`) — for all five dimensions: durations (`…ms`/`…s`), easings (`cubic-bezier(...)` / keywords), translate distances (`translate*(…px)`), `scale(...)`, and `blur(...)`. Read `@keyframes` via the `animation` that drives them.
-2. For each value, infer **what the motion does** from the surrounding selectors / component names (modal close, dropdown open, tooltip, badge appear, page slide, text reveal, shake, hover lift, …). Look the usage up in the token tables above and pick the token whose documented usage matches — **usage first, never nearest number**. Do **not** suggest whole-transition recipe swaps; that is `transitions-dev`'s `transitions apply` domain.
+2. For each value, infer **what the motion does** from the surrounding selectors / component names (modal close, dropdown open, tooltip, badge appear, page slide, text reveal, shake, hover lift, …). Look the usage up in the token tables above and pick the token whose documented usage matches — **usage first, never nearest number**. Do **not** suggest whole-transition recipe swaps or add new transitions — this skill only refines motion that already exists.
 3. Apply the **polish rules**: check open/close asymmetry, hover in/out, stagger totals, and delays — not just whether a single value is on-grid.
 4. Output a numbered list grouped by file, showing only values that should change:
    - `path/to/Component.css:L42` — `modal close: 300ms → var(--duration-quick) (150ms)` — close should be quicker than the 250ms open.

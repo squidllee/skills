@@ -2,9 +2,8 @@
    Copy this :root block into your project once and reference the tokens
    with var(--…) anywhere (e.g. transition: transform var(--duration-fast)
    var(--ease-smooth-out)). These are the same tokens the transitions.dev
-   Motion tokens tab exposes. The transitions-dev snippets ship literal
-   values; `transitions polish` maps those values back to these tokens by
-   usage. */
+   Motion tokens tab exposes. Code that ships literal values gets mapped
+   back to these tokens by usage. */
 :root {
   /* Durations */
   --duration-stagger: 40ms;  /* per-item stagger offset */

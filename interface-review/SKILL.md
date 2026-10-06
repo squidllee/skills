@@ -1,6 +1,5 @@
 ---
 name: interface-review
-disable-model-invocation: true
 description: Reviews your work across multiple categories like UI, typography, layout, color, writing and accessibility and gives you a detailed analysis of the findings.
 ---
 

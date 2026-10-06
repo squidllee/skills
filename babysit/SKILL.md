@@ -13,7 +13,7 @@ Only act on checks and comments newer than the lastest push. Verify every bot fi
 
 Keep an eye on changes to 'main' and rebase when needed. If an overlapping PR makes this one obsolete, stop monitoring, report it to the user, and ask before closing the PR unless closure was excplicitly authorized.
 
-If a review bot leaves feedback you believe is not worth addressing, reply with a written reason and resolve the comment. Use any available comment writing skill for every comment posted on my behalf.
+If a review bot leaves feedback you believe is not worth addressing, reply with a written reason and resolve the comment. Run the `pr-comment` skill before writing anything on the PR timeline; it decides whether a comment is warranted at all.
 
 Screenshots and videos help as well. If there is a dedicated file upload skill available, use it, if not then you can use the 'here-now' skill if its installed to embed images into the pr description. If there is no skill available to upload a file, stop and tell the user. Never install a skill by yourself or report that something was uploaded when it wasn't.
 
