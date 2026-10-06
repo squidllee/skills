@@ -1,0 +1,1 @@
+../../../.cubic-plugin/plugin-source/skills/handle-codebase-scan/SKILL.md

@@ -1,0 +1,1 @@
+../../../.cubic-plugin/plugin-source/skills/check-pr-comments/SKILL.md
