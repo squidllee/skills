@@ -342,6 +342,411 @@
       "skillFolderHash": "1b5943432ddd1b980206968c529a323cc992dbec",
       "installedAt": "2026-09-18T01:40:48.177Z",
       "updatedAt": "2026-09-18T01:40:48.177Z"
+    },
+    "architect": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/architect/SKILL.md",
+      "skillFolderHash": "6fad82878463a0957991cb062ed761fae71306ed",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "arena": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/arena/SKILL.md",
+      "skillFolderHash": "5e3db9b52f20c15596a2992e76eed81a357f5769",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "automate-me": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/automate-me/SKILL.md",
+      "skillFolderHash": "a160976e68b498ecc1cf576b6ee25e67080a42a0",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "benchmark-checklist": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/benchmark-checklist/SKILL.md",
+      "skillFolderHash": "a43b91b766e1847b0f97c8edb41e5f85aa700926",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "blast-radius": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/blast-radius/SKILL.md",
+      "skillFolderHash": "97743ce1eb3031b97eeaede692f7275c4115751d",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "bro": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/bro/SKILL.md",
+      "skillFolderHash": "53c3b2c5dc11fe0ee4156468da27505df9239dc6",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "correct": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/correct/SKILL.md",
+      "skillFolderHash": "2396c1bb5426e7344846a524342d120b2f29f8da",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "create-verification-skill": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/create-verification-skill/SKILL.md",
+      "skillFolderHash": "4300cabaa1672645456d7221a943dd38fea2e626",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "figure-it-out": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/figure-it-out/SKILL.md",
+      "skillFolderHash": "068383d925623ede7de1eae6fef02406935863db",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "how": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/how/SKILL.md",
+      "skillFolderHash": "7d1ab3eaacad5969ed428117e19991aa75314aea",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "interrogate": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/interrogate/SKILL.md",
+      "skillFolderHash": "3cf6590ec1778f7a57d3fdf3fb36aa030f08ebdb",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "maintain-verification-skill": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/maintain-verification-skill/SKILL.md",
+      "skillFolderHash": "9c6876c74a05939f1ec25018f5df08d5c501faf0",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "make-bot-ui": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/make-bot-ui/SKILL.md",
+      "skillFolderHash": "9807017455eeeb9a9f41e93192cdc38c0025d225",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "no-comments": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/no-comments/SKILL.md",
+      "skillFolderHash": "fce82c05f32184955fb93ecac9fb42647bfbc12e",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "p3-help": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/p3-help/SKILL.md",
+      "skillFolderHash": "a647cca41b82aa6d0c81b5b7fac2a16f63f4be13",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "p3-mode": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/p3-mode/SKILL.md",
+      "skillFolderHash": "bdd13ed97a858e92e77b342927201044c8f697fa",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-attack-the-premise": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-attack-the-premise/SKILL.md",
+      "skillFolderHash": "ea77149f38bdfa5002591fa35af87ed45dd5574c",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-boundary-discipline": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-boundary-discipline/SKILL.md",
+      "skillFolderHash": "743b098e6874a93b11e9f4d5843c79a243580ae2",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-build-the-lever": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-build-the-lever/SKILL.md",
+      "skillFolderHash": "254a12ec371db2688b2d8ef70c1feed15dc0f2a5",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-encode-lessons-in-structure": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-encode-lessons-in-structure/SKILL.md",
+      "skillFolderHash": "8875632be32ca6cff494def2810e5e71fceba65d",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-exhaust-the-design-space": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-exhaust-the-design-space/SKILL.md",
+      "skillFolderHash": "3c9528f7814d889dc91c2434cc942439a9dd6257",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-experience-first": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-experience-first/SKILL.md",
+      "skillFolderHash": "2dbcf0d0d4473ca3a93d17e2167b587cfec7f6da",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-explain-the-number": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-explain-the-number/SKILL.md",
+      "skillFolderHash": "66adec53ff66ff4e99f35bd9f1a18235274a0994",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-fix-root-causes": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-fix-root-causes/SKILL.md",
+      "skillFolderHash": "0ec22d21fffd180573f49ea239ee76083d6a6f40",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-foundational-thinking": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-foundational-thinking/SKILL.md",
+      "skillFolderHash": "5880f6577956b14ee4ee89cb72c03fd8bd82a5ac",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-guard-the-context-window": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-guard-the-context-window/SKILL.md",
+      "skillFolderHash": "3f84b685047f0f068ec8860d26799651d425d7d9",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-laziness-protocol": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-laziness-protocol/SKILL.md",
+      "skillFolderHash": "69c23647b389130012f04971c6912598e3f3b913",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-make-operations-idempotent": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-make-operations-idempotent/SKILL.md",
+      "skillFolderHash": "c69d590d8da3af63e34954aa21254e1ec9a2996c",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-migrate-callers-then-delete-legacy-apis": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "skillFolderHash": "7b49b9000c86ea1ae142af47d0ff5f9f95199c34",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-minimize-reader-load": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-minimize-reader-load/SKILL.md",
+      "skillFolderHash": "aec92309f89c6e7a4a3cad94e8b7929c1a371643",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-model-the-domain": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-model-the-domain/SKILL.md",
+      "skillFolderHash": "d584d474eb590208584188e6932d2ccdafe9d52b",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-never-block-on-the-human": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-never-block-on-the-human/SKILL.md",
+      "skillFolderHash": "bbdf25e9f8197253a44342e6e7793324a10965fb",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-outcome-oriented-execution": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-outcome-oriented-execution/SKILL.md",
+      "skillFolderHash": "8d87411f36c74111e5e54a804dda727e2c034914",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-prove-it-works": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-prove-it-works/SKILL.md",
+      "skillFolderHash": "41e2142b6479db1dfdb9c2a3b856a895af61089d",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-redesign-from-first-principles": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-redesign-from-first-principles/SKILL.md",
+      "skillFolderHash": "7d6b29659ee81f3e4ce5475b868bf891a8041e7c",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-separate-before-serializing-shared-state": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "skillFolderHash": "89505c32f2d472da415e7696a6893ad28e108c5f",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-sequence-verifiable-units": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-sequence-verifiable-units/SKILL.md",
+      "skillFolderHash": "72823c2b61b2a13689b9c159fc2b1195935c8e8b",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-subtract-before-you-add": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-subtract-before-you-add/SKILL.md",
+      "skillFolderHash": "ea107acd74b874b27ec52983384d2ec7d4b8088a",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-test-behavior-not-implementation": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-test-behavior-not-implementation/SKILL.md",
+      "skillFolderHash": "4c5cb15166bd6bcc5023e3180ed0105ea4a6e06a",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "principle-type-system-discipline": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/principle-type-system-discipline/SKILL.md",
+      "skillFolderHash": "88836c25807833f4f8bc79b8c8542fc1c8c558b3",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "reflect": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/reflect/SKILL.md",
+      "skillFolderHash": "ed04c606b918baeccee3bf1c0041f3ae54b4d67a",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "setup-p3": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/setup-p3/SKILL.md",
+      "skillFolderHash": "d0edcb81c9d8f3280e907f0864cfd2eb547d6edb",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "swarm": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/swarm/SKILL.md",
+      "skillFolderHash": "01cff29bfb07e7f693ef345c5717e8cd2316f66f",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "tdd": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/tdd/SKILL.md",
+      "skillFolderHash": "1064da72ceca07bf7f36bddebada585bb59da7bc",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
+    },
+    "why": {
+      "source": "uzairansaruzi/p3-stack",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
+      "skillPath": "skills/why/SKILL.md",
+      "skillFolderHash": "8cac78b2fa9cb9e79e68a83ac1dd4f05a8b9cda6",
+      "installedAt": "2026-10-07T03:01:14.614Z",
+      "updatedAt": "2026-10-07T03:01:14.614Z"
     }
   },
   "dismissed": {
