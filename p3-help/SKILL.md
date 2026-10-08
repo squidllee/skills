@@ -49,6 +49,7 @@ The default answer is `/p3-mode`, which runs most of the others when its steps n
 | Get several attempts at one brief, merged into the best one | [`/arena`](../arena/SKILL.md) |
 | Run parallel checks over slices, or race workers, as delegated child tasks | [`/swarm`](../swarm/SKILL.md) |
 | Have several models review a diff and try to break it | [`/interrogate`](../interrogate/SKILL.md) |
+| Check or monitor a PR, or drive it to merge-ready when asked | [`babysit`](../babysit/SKILL.md) |
 | Fix a bug test-first when a cheap local test exists | [`/tdd`](../tdd/SKILL.md) |
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/typescript-best-practices`](../typescript-best-practices/SKILL.md) |
 | Strip comments before review, using a reviewer that didn't write them | [`/no-comments`](../no-comments/SKILL.md) |
@@ -84,7 +85,7 @@ Close calls:
 
 Playbooks are step lists inside `/p3-mode`, not skills, so they aren't invoked by name. Inside `/p3-mode`, describing the task picks one, and these phrases name one directly; the Playbooks section of [`p3-mode`](../p3-mode/SKILL.md) lists every playbook and when it applies:
 
-- "babysit this pr" or "check on pr 123" runs Babysit. It drives the PR to merge-ready and stops there. It doesn't merge unless the user asks to merge, land, or ship.
+- "babysit this pr" or "check on pr 123" uses the shared [`babysit` skill](../babysit/SKILL.md). A P3 stack also uses its stack-only adapter at [`p3-mode/playbooks/babysit.md`](../p3-mode/playbooks/babysit.md). The shared skill defines when to check, watch, or drive; babysitting never authorizes a merge.
 - "land the stack" runs Shipping. "take over this branch" runs Session pickup. "pause safely" runs Pause safely. "run the eval playbook" runs Eval.
 - "full autopilot on this queue" runs Autopilot-full. "stack them, don't ship" runs Autopilot-stack.
 
