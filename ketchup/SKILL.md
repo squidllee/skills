@@ -1,14 +1,13 @@
 ---
 name: ketchup
-description: "Catch the user up on what changed in this thread since their last message, in a few plain sentences and small visuals. Give each action item just enough context to make the call. Use for /ketchup."
-disable-model-invocation: true
+description: "Catch the user up on what changed in this thread since their last message, in a few plain sentences and small visuals. Give each action item just enough context to make the call. Use for 'ketchup'."
 ---
 
 # Ketchup
 
-Catch the user up on what changed in this thread since the last message they wrote before `/ketchup`. Notifications, PR watch wake-ups, and delegated task results are not their messages. Assume the user remembers their last message and nothing after it.
+Catch the user up on what changed in this thread since the last message they wrote before 'ketchup'. Notifications, PR watch wake-ups, and delegated task results are not their messages. Assume the user remembers their last message and nothing after it.
 
-Use [`/bro`](../bro/SKILL.md)'s voice, not its task: plain words, short sentences, no jargon, like one person catching up another. Say what changed for the user, not how you did it. Say "the tests pass", not "CI is green". Leave out hashes, file paths, commands, build numbers, and test counts unless the user needs one to act. Call each PR, branch, task, or thread by a name the user would know, not by a label you invented. If a fact needs context to make sense, give the context or leave the fact out.
+Use: plain words, short sentences, no jargon, like one person catching up another. Say what changed for the user, not how you did it. Say "the tests pass", not "CI is green". Leave out hashes, file paths, commands, build numbers, and test counts unless the user needs one to act. Call each PR, branch, task, or thread by a name the user would know, not by a label you invented. If a fact needs context to make sense, give the context or leave the fact out.
 
 ## Gather what changed
 

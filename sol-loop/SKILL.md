@@ -1,16 +1,20 @@
 ---
-name: sol-loop
-description: Use when the user says "sol loop".
+name: smol-loop
+description: Use when the user says "smol loop".
 ---
 
-# sol-loop
+# smol-loop
 
 This is a workflow for making your code changes more correct before (or
-sometimes after) filing a pull request. tl;dr - use OpenAI's GPT Sol to review
+sometimes after) filing a pull request. tl;dr - use subagents to review
 your code in a loop.
 
-Make the most minimal possible changes to appease the Sol reviewers. Be careful
+Make the most minimal possible changes to appease the "minion" reviewers. Be careful
 of scope creep and don't be scared to push back.
+
+"Minion(s)" = GPT 6 Luna or Haiku 5.5 models
+
+GPT models are generally better at backend work, computer use/browser use, and being somewhat thourghough while Haiku is generally better(somewhat) at UI and writing cleaner, nicer to maintain code. Take this with a pinch of salt but don't waste your time trying to test out each model for every task and round you do because that's frivolous.
 
 ## Budget
 
@@ -21,7 +25,7 @@ of scope creep and don't be scared to push back.
   the user asks.
 - Stop early if a round returns only nits. Declined nits and comment,
   doc, or format-only fixes need no new round.
-- One reviewer only. Sol must not start subagents or reviewers.
+- One reviewer only. "Minions" must not start subagents or reviewers.
 - Keep a ledger: id, severity, outcome, usage if returned. Never guess it.
 
 ## 1. Scope
@@ -43,9 +47,9 @@ Use one diff command all rounds. State intent and out-of-scope in 1-2
 sentences. Run covering checks. Do not send code this change breaks. Note
 missing or pre-failing checks in the brief.
 
-## 2. Start Sol
+## 2. Start a "minion"
 
-In T3, call `orchestrator_capabilities`. Pick the latest Sol unless the user
+In T3, call `orchestrator_capabilities`. Pick the latest "minion" model unless the user
 named a version. Do not hardcode an ID. Record provider, model, and effort
 only if exposed. Use `delegate_task` every round (`role: "review"`,
 `mode: "async"`). Save `taskId`. New `clientRequestId` per round.
@@ -53,8 +57,8 @@ only if exposed. Use `delegate_task` every round (`role: "review"`,
 `t3_thread_send`, `create_threads`, or `t3_thread_launch` for review.
 
 If T3 tools are not listed, try one direct capability call. Outside T3, use
-a native Sol subagent and keep its ID. In Claude Code, use a custom subagent
-only if it is set up to run Sol. If no route runs Sol, report the blocker. Do
+a native "minion" subagent and keep its ID. In Claude Code, use a custom subagent
+only if it is set up to run "minion". If no route runs "minion", report the blocker. Do
 not substitute a model.
 
 Do not edit scoped files while review runs. Wait for the notice. Do not
@@ -97,7 +101,7 @@ Start one only if budget remains and a blocker or should is open, behavior code
 changed, or approval does not cover the current behavior diff. Use a fresh
 `delegate_task` in T3, or follow up the saved native ID. Send the round 1 brief,
 the ledger (`fixed:` / `disagree:` / `declined:` + evidence), the same base
-diff, and the change since last round. Tell Sol: open ids and changed code only.
+diff, and the change since last round. Tell the "minion": open ids and changed code only.
 Mark each old id `resolved` or `still open: <reason>`.
 
 ## 5. Stop and ship
@@ -111,9 +115,9 @@ Do not push during the loop. Push after agreement only if the user asked
 to push, ship, or update the PR. If you push to a PR, add above the model
 blurb:
 
-`Reviewed with sol-loop: <N> rounds with <model>. Sol verdict: approved`.
+`Reviewed with smol-loop: <N> rounds with <model>. Minion verdict: approved`.
 
 Add `on <effort>` only if verified.
 
-Report: rounds, model, what Sol changed, diff size before/after, fixed and
+Report: rounds, model, what the "minion(s)" changed, diff size before/after, fixed and
 declined findings with reasons, usage if exposed (else say not), pushed or not.

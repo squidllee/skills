@@ -1,1 +1,0 @@
-../../../.cubic-plugin/plugin-source/skills/review-patterns/SKILL.md

@@ -10,7 +10,7 @@ note callout:
 
 ```md
 > [!NOTE]
-> 🤖 **<model> responding on behalf of <user>**
+> 🤖 **<model> responding on behalf of squid**
 
 Actual comment starts here.
 ```
