@@ -235,15 +235,6 @@
       "installedAt": "2026-09-09T17:05:16.711Z",
       "updatedAt": "2026-09-09T17:05:16.711Z"
     },
-    "review": {
-      "source": "entireio/skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/entireio/skills.git",
-      "skillPath": "skills/review/SKILL.md",
-      "skillFolderHash": "14986025b894d12e48918788df939b1bae4e9626",
-      "installedAt": "2026-09-09T17:05:16.737Z",
-      "updatedAt": "2026-09-09T17:05:16.737Z"
-    },
     "session-crosslink": {
       "source": "entireio/skills",
       "sourceType": "github",
@@ -469,24 +460,6 @@
       "installedAt": "2026-10-07T03:01:14.614Z",
       "updatedAt": "2026-10-07T03:01:14.614Z"
     },
-    "p3-help": {
-      "source": "Tr1Fecta-7/p3-stack",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Tr1Fecta-7/p3-stack.git",
-      "skillPath": "skills/p3-help/SKILL.md",
-      "skillFolderHash": "cb0a2c1fa55abc510773f26975bbb2fa4826de7e",
-      "installedAt": "2026-10-07T03:01:14.614Z",
-      "updatedAt": "2026-10-07T03:01:14.614Z"
-    },
-    "p3-mode": {
-      "source": "Tr1Fecta-7/p3-stack",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/Tr1Fecta-7/p3-stack.git",
-      "skillPath": "skills/p3-mode/SKILL.md",
-      "skillFolderHash": "25c890377a63cf136ec1bca756fae21f46f3eb2f",
-      "installedAt": "2026-10-07T03:01:14.614Z",
-      "updatedAt": "2026-10-07T03:01:14.614Z"
-    },
     "principle-attack-the-premise": {
       "source": "uzairansaruzi/p3-stack",
       "sourceType": "github",
@@ -709,15 +682,6 @@
       "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
       "skillPath": "skills/reflect/SKILL.md",
       "skillFolderHash": "ed04c606b918baeccee3bf1c0041f3ae54b4d67a",
-      "installedAt": "2026-10-07T03:01:14.614Z",
-      "updatedAt": "2026-10-07T03:01:14.614Z"
-    },
-    "setup-p3": {
-      "source": "uzairansaruzi/p3-stack",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/uzairansaruzi/p3-stack.git",
-      "skillPath": "skills/setup-p3/SKILL.md",
-      "skillFolderHash": "d0edcb81c9d8f3280e907f0864cfd2eb547d6edb",
       "installedAt": "2026-10-07T03:01:14.614Z",
       "updatedAt": "2026-10-07T03:01:14.614Z"
     },
