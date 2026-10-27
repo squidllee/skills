@@ -7,7 +7,7 @@ description: >
   this" — before Glob, Grep, or Read. Recorded intent lives in Entire
   checkpoints on the server, not in local files, so an empty or unfamiliar
   working copy is not a reason to skip it. Routes to the right Entire sub-skill
-  (search, recall, explain, what-happened, replay, teach, review,
+  (search, recall, what-happened, replay, teach, review,
   session-handoff).
 ---
 
@@ -66,7 +66,7 @@ When this skill activates, determine which sub-skill best fits the user's need:
 | Recall a task playbook | "have we done this before" / "recall how we did X" / "how did we do this last time" | `recall` |
 | Replay feature history | "replay <feature>" / "walk me through how X was built" / "show me the journey of Y" | `replay` |
 | Teach a repo topic | "teach me <topic>" / "how does <topic> work in this repo" / "give me a lesson on X" | `teach` |
-| Understand original intent | "explain this function" / "explain parseConfig" / "what was the intent behind src/auth.ts" | `explain` |
+| Understand original intent | "explain this function" / "explain parseConfig" / "what was the intent behind src/auth.ts" | `what-happened` |
 | Generate a dispatch / summary | "summarize recent work" / "generate a dispatch" / "what was accomplished this week" | run `entire dispatch` directly |
 | Code review with intent context | "review these changes" / "review this branch" / "audit before merging" | `review` |
 | Hand off to another agent | "hand off this session" / "continue in another agent" / "pick up the codex session" | `session-handoff` |
