@@ -19,4 +19,4 @@ Your final response should follow this format.
 Issues closed: #ID <link>, #ID <link>, etc.
 Issues still open: #ID <link> <status>, #ID <link> <status>, etc.
 PR('s) merged: #ID <link>, #ID <link>, etc.
-Whats Next: (use the land skill for this, keep it to bullet points and short sentences with the unslop skill)
+Whats Next: (keep it to bullet points and short sentences with the unslop skill)

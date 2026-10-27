@@ -1,0 +1,828 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><desc id="lib"><![CDATA[
+(() => {
+  const s = document.createElement("style"); s.dataset.v = ""; s.textContent = "\n/* Paper Mono only. local() works wherever the font is installed; file:// URLs are blocked in T3. */\n@font-face { font-family: \"PM\"; font-weight: 300; src: local(\"Paper Mono Light\"), local(\"PaperMono-Light\"); }\n@font-face { font-family: \"PM\"; font-weight: 400; src: local(\"Paper Mono\"), local(\"PaperMono-Regular\"); }\n@font-face { font-family: \"PM\"; font-weight: 500; src: local(\"Paper Mono Medium\"), local(\"PaperMono-Medium\"); }\n@font-face { font-family: \"PM\"; font-weight: 600; src: local(\"Paper Mono SemiBold\"), local(\"PaperMono-SemiBold\"); }\n@font-face { font-family: \"PM\"; font-weight: 700; src: local(\"Paper Mono Bold\"), local(\"PaperMono-Bold\"); }\n\n/* Tokens mirror the Paper file \"Scratchpad\" / page \"viz system\". Dark only: every value is fixed. */\n:root {\n  --ink: #ece8e1;\n  --muted: #8b867f;\n  --rule: color-mix(in srgb, var(--ink) 12%, transparent);\n  --rule-strong: color-mix(in srgb, var(--ink) 40%, transparent);\n  --faint: color-mix(in srgb, var(--ink) 20%, transparent);\n  --ground: #080705;   /* replaced by T3's --background when the thread is dark */\n  --font: \"PM\", \"Paper Mono\", ui-monospace, monospace;\n  --blue:#4d99f9; --mint:#42df9a; --pink:#f470b9; --amber:#f5af3d; --violet:#ac79fc;\n  --cyan:#44d4dd; --orange:#f57341; --lime:#8acf5a; --red:#f44c4c; --lavender:#cccef5;\n  --gutter: 48px;\n}\n/* No dark thread to sit on (light T3 theme, or opened as a file): paint the dark ground ourselves. */\n:root[data-paint] { background: var(--ground); }\n:root[data-paint] body { background: var(--ground); padding: 24px; }\n:root[data-standalone] body { padding: 48px; }\nhtml, body { margin: 0; }\nbody, body * { font-family: var(--font) !important; }\nbody { color: var(--ink); font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }\n\n/* Board */\n.v-title { font-size: 26px; line-height: 32px; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 10px; text-wrap: balance; }\n.v-dek { color: var(--muted); margin: 0 0 28px; max-width: 64ch; }\n.v-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 36px var(--gutter); }\n.v-grid + .v-grid, .v-stats + .v-grid { margin-top: 36px; }\n.v-panel { min-width: 0; }\n.v-panel > h2 { font-size: 15px; line-height: 20px; font-weight: 600; margin: 0 0 14px; }\n.v-panel > h2 small { font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 10px; }\n.v-wide { grid-column: 1 / -1; }\n.v-note { font-size: 12px; line-height: 16px; color: var(--muted); margin-top: 14px; }\n.v-empty { color: var(--muted); }\n.v-empty .v-track-empty { height: 14px; margin-top: 8px; background: conic-gradient(var(--faint) 25%, #0000 0) 0 0/4px 4px; }\n.v-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; flex-wrap: wrap; margin-top: 40px; color: var(--muted); }\n.v-foot .mark { font-size: 18px; line-height: 24px; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }\n.v-foot .mark span { font-weight: 300; color: var(--muted); }\n\n/* Text atoms */\n.v-lab { white-space: nowrap; font-weight: 500; color: var(--c); overflow: hidden; text-overflow: ellipsis; max-width: 22ch; }\n.v-lab em { font-style: normal; font-weight: 400; color: var(--muted); margin-left: 8px; font-size: 12px; }\n.v-val { white-space: nowrap; }\n.v-val.top { font-weight: 700; }\n.v-val.bad { color: var(--red); }\n.v-mut { color: var(--muted); }\n.v-legend-inline { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-bottom: 14px; }\n.v-legend-inline span { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }\n.v-legend-inline i { width: 8px; height: 8px; background: var(--c); display: block; }\n\n/* Dither fill from the origin: solid 35% -> 75% band 20% -> checker (50%) 20% -> dots (25%) 25% -> solid tip.\n   Every band is a share of the run; only the tip is fixed. Cell is always 4px. */\n.v-bar { display: flex; height: 14px; color: var(--c); flex: none; min-width: 2px; }\n.v-bar > i { display: block; background: currentColor; min-width: 0; min-height: 0; }\n.v-bar .b { flex: 35 1 0; min-width: 4px; }\n.v-bar .t { flex: 20 1 0; -webkit-mask: conic-gradient(#000 75%, #0000 0) 0 0/4px 4px; mask: conic-gradient(#000 75%, #0000 0) 0 0/4px 4px; }\n.v-bar .k { flex: 20 1 0; -webkit-mask: conic-gradient(#000 25%, #0000 0 50%, #000 0 75%, #0000 0) 0 0/4px 4px; mask: conic-gradient(#000 25%, #0000 0 50%, #000 0 75%, #0000 0) 0 0/4px 4px; }\n.v-bar .d { flex: 25 1 0; -webkit-mask: conic-gradient(#000 25%, #0000 0) 0 0/4px 4px; mask: conic-gradient(#000 25%, #0000 0) 0 0/4px 4px; }\n.v-bar .s { flex: 0 0 4px; }\n.v-bar.rev { flex-direction: row-reverse; }\n.v-bar.col { flex-direction: column-reverse; height: auto; width: 100%; min-width: 0; overflow: hidden; }\n.v-bar.col .b { min-width: 0; min-height: 4px; }\n.v-bar.col .s { flex-basis: 2px; }\n/* Free/empty space: dots only, no solid base. */\n.v-bar.free .b, .v-bar.free .t, .v-bar.free .k, .v-bar.free .s { display: none; }\n/* Short runs: under 36px the dots go, under 12px it is all solid. */\n.v-bar.nodots .d, .v-bar.solid .t, .v-bar.solid .k, .v-bar.solid .d, .v-bar.solid .s { display: none; }\n.v-bar.solid .b { min-width: 0; min-height: 0; }\n/* Density ramp L0\u2013L4 for heatmaps, waffles, treemaps. */\n.L0 { box-shadow: inset 0 0 0 1px var(--rule); }\n.L1 { background: conic-gradient(var(--c) 25%, #0000 0) 0 0/4px 4px; }\n.L2 { background: conic-gradient(var(--c) 25%, #0000 0 50%, var(--c) 0 75%, #0000 0) 0 0/4px 4px; }\n.L3 { background: conic-gradient(var(--c) 75%, #0000 0) 0 0/4px 4px; }\n.L4 { background: var(--c); }\n\n/* Ranked rows */\n.v-rows { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-rows.ranked { grid-template-columns: 2ch max-content minmax(0, 1fr); }\n.v-rank { color: var(--muted); }\n.v-track { display: flex; align-items: center; gap: 10px; min-width: 0; position: relative; }\n.v-track .v-val { position: relative; z-index: 1; background: var(--ground); padding-right: 2px; }\n.v-target { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--muted); }\n.v-target-lab { position: absolute; top: -20px; font-size: 12px; line-height: 16px; color: var(--muted); white-space: nowrap; transform: translateX(-50%); }\n.v-stack { display: flex; gap: 2px; flex: none; }\n/* Diverging */\n.v-div { display: grid; grid-template-columns: max-content 1fr 1px 1fr; row-gap: 6px; align-items: center; }\n.v-div .v-lab { padding-right: 14px; }\n.v-div .neg { display: flex; justify-content: flex-end; align-items: center; gap: 10px; min-width: 0; }\n.v-div .pos { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.v-div .axis { background: var(--rule); align-self: stretch; margin: -3px 0; grid-column: 3; }\n/* Range */\n.v-range { position: relative; height: 14px; flex: none; }\n.v-range .ln { position: absolute; top: 7px; height: 1px; background: var(--muted); }\n.v-range .end { position: absolute; top: 5px; width: 4px; height: 4px; background: var(--c); }\n.v-range .med { position: absolute; top: 0; width: 4px; height: 14px; background: var(--c); }\n\n/* Part to whole */\n.v-strip { display: flex; gap: 3px; height: 22px; }\n.v-strip > div { display: flex; min-width: 2px; }\n.v-strip .v-bar { height: 100%; width: 100%; }\n.v-strip > .dim { opacity: .35; }\n.v-legend { display: grid; grid-template-columns: max-content max-content max-content; justify-content: start; column-gap: 20px; row-gap: 4px; margin-top: 14px; }\n.v-legend .v-val, .v-legend .v-pct { text-align: right; }\n.v-legend .v-pct { color: var(--muted); }\n.v-meter-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; }\n.v-meter-head b { font-weight: 600; color: var(--c); }\n.v-meter { position: relative; display: flex; gap: 3px; height: 22px; }\n.v-meter .v-bar { height: 100%; }\n.v-meter .warn { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--muted); }\n.v-meter .warn span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 12px; line-height: 16px; color: var(--muted); white-space: nowrap; padding-bottom: 2px; }\n.v-meters { display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content max-content; column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-meters .trk { display: flex; gap: 2px; height: 14px; }\n.v-meters .trk .v-bar { height: 100%; }\n.v-waffle { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }\n.v-waffle .cells { display: grid; grid-template-columns: repeat(10, 14px); gap: 4px; }\n.v-waffle .cells i { width: 14px; height: 14px; display: block; }\n.v-tree { position: relative; }\n.v-tree > div { position: absolute; border-top: 1px solid var(--c); background: conic-gradient(var(--c) 25%, #0000 0) 0 0/4px 4px; overflow: hidden; }\n.v-tree .chip { display: inline-block; background: var(--ground); padding: 4px 6px; margin: 4px; line-height: 16px; }\n.v-tree .chip[hidden] { display: none; }\n.v-tree .chip b { display: block; font-weight: 500; color: var(--c); font-size: 13px; }\n.v-tree .chip span { font-size: 12px; color: var(--muted); }\n\n/* Time */\n.v-cols { display: flex; align-items: flex-end; gap: 3px; border-bottom: 1px solid var(--rule); position: relative; }\n.v-cols > div { flex: 1; display: flex; flex-direction: column-reverse; height: 100%; min-width: 0; }\n.v-cols .seg { flex: none; }\n.v-cols .seg + .seg { margin-bottom: 2px; }\n.v-axis { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; line-height: 16px; margin-top: 6px; }\n.v-peak { position: absolute; font-size: 12px; line-height: 16px; white-space: nowrap; transform: translate(-50%, -100%); padding-bottom: 4px; }\n.v-line { display: block; overflow: visible; }\n.v-line text { font-family: var(--font); }\n.v-heat { display: grid; gap: 3px; align-items: center; }\n.v-heat i { display: block; height: 16px; }\n.v-heat .wd { color: var(--muted); font-size: 12px; line-height: 16px; }\n.v-ramp { display: flex; gap: 4px; align-items: center; margin-top: 10px; font-size: 12px; color: var(--muted); }\n.v-ramp i { width: 16px; height: 16px; display: block; }\n.v-tl { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-tl .lane { position: relative; height: 14px; }\n.v-tl .lane .v-bar { position: absolute; top: 0; }\n.v-tl .lane .dur { position: absolute; top: -3px; color: var(--muted); white-space: nowrap; }\n.v-tl .now { position: absolute; top: -20px; width: 1px; background: var(--muted); }\n.v-tl .now span { position: absolute; top: 0; left: 6px; font-size: 12px; line-height: 16px; color: var(--muted); }\n.v-ticks { display: grid; grid-template-columns: max-content minmax(0, 1fr) max-content; column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-ticks .lane { position: relative; height: 14px; border-bottom: 1px solid var(--rule); }\n.v-ticks .lane i { position: absolute; top: 0; width: 2px; height: 14px; background: var(--c); }\n/* Spans: waterfall, lanes, gantt. Positions are px, measured from the lane after layout. */\n.v-sp { display: grid; column-gap: 14px; row-gap: 6px; align-items: center; position: relative; }\n.v-sp .lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--c, var(--ink)); }\n.v-sp .lab.hi { font-weight: 500; }\n.v-sp .lab .tw { color: var(--muted); font-weight: 400; }\n.v-sp .lane { position: relative; height: 20px; min-width: 0; }\n.v-sp .lane > .v-bar, .v-sp .lane > i { position: absolute; top: 3px; height: 14px; }\n.v-sp .lane > i { background: var(--c); }\n.v-sp .lane > i.idle { background: conic-gradient(var(--faint) 25%, #0000 0) 0 0/4px 4px; }\n.v-sp .lane .dur { position: absolute; top: 2px; font-size: 12px; line-height: 16px; color: var(--muted); white-space: nowrap; }\n.v-sp .lane .dur.hi { color: var(--ink); }\n.v-sp .lane .dur.top { font-size: 13px; top: 0; line-height: 20px; font-weight: 700; color: var(--ink); }\n.v-sp .num { text-align: right; white-space: nowrap; }\n.v-sp .sub { font-size: 12px; line-height: 16px; color: var(--muted); white-space: nowrap; }\n.v-sp .head { font-size: 12px; line-height: 16px; color: var(--muted); }\n.v-sp .ax { position: relative; height: 22px; font-size: 12px; line-height: 16px; color: var(--muted); border-top: 1px solid var(--rule); margin-top: 4px; }\n.v-sp .ax span { position: absolute; top: 6px; white-space: nowrap; }\n.v-sp .today { position: absolute; width: 1px; background: var(--muted); pointer-events: none; }\n.v-sp .today span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 12px; line-height: 16px; color: var(--muted); padding-bottom: 2px; }\n.v-sp .gt { position: absolute; top: 3px; height: 14px; display: flex; }\n.v-sp .gt .dn { background: var(--c); }\n.v-sp .gt .lf { flex: 1; background: conic-gradient(var(--c) 25%, #0000 0) 0 0/4px 4px; }\n.v-sp .gt .due { width: 2px; flex: none; background: var(--c); }\n/* Status: one cell per run. Grid cells sit on a 12px pitch so the dot fill lands on the 4px grid. */\n.v-st { display: grid; grid-template-columns: max-content minmax(0, 1fr) 40px max-content; column-gap: 14px; row-gap: 4px; align-items: center; }\n.v-st .cells { display: flex; gap: 2px; height: 20px; align-items: center; }\n.v-st .cells i { width: 10px; height: 10px; flex: none; display: block; }\n.v-st.dense .cells { gap: 2px; }\n.v-st.dense .cells i { width: 2px; height: 14px; }\ni.s-ok { background: conic-gradient(var(--mint) 25%, #0000 0) 0 0/4px 4px; }\ni.s-fail { background: var(--red); }\ni.s-skip { box-shadow: inset 0 0 0 1px var(--rule-strong); }\n.v-st.dense i.s-ok { background: color-mix(in srgb, var(--mint) 35%, transparent); }\n.v-st.dense i.s-skip { box-shadow: none; background: var(--rule-strong); height: 4px !important; align-self: flex-end; margin-bottom: 3px; }\n.v-mark { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }\n.v-mark i { width: 8px; height: 8px; display: block; }\n.v-spark { display: inline-flex; align-items: flex-end; gap: 1px; height: 20px; width: 80px; vertical-align: middle; }\n.v-spark i { flex: 1; background: conic-gradient(var(--c) 25%, #0000 0 50%, var(--c) 0 75%, #0000 0) 0 0/2px 2px; border-top: 2px solid var(--c); box-sizing: border-box; }\n\n/* Distribution & change */\n.v-sum { display: flex; flex-wrap: wrap; gap: 14px 44px; margin-bottom: 20px; }\n.v-sum b { display: block; font-size: 18px; line-height: 24px; font-weight: 600; color: var(--c, var(--ink)); }\n.v-sum span { display: block; font-size: 12px; line-height: 16px; color: var(--muted); margin-top: 2px; }\n.v-hist { position: relative; padding-top: 24px; }\n.v-hist .cols { display: grid; gap: 2px; align-items: end; height: 120px; border-bottom: 1px solid var(--rule); }\n.v-hist .cols > div { display: flex; flex-direction: column-reverse; height: 100%; min-width: 0; }\n.v-hist .mk { position: absolute; top: 20px; height: 124px; width: 1px; background: var(--rule-strong); }\n.v-hist .mk span, .v-hist .lab { position: absolute; font-size: 12px; line-height: 16px; white-space: nowrap; }\n.v-hist .mk span { top: -20px; left: 6px; color: var(--muted); }\n.v-hist .mk.p50 span { color: var(--ink); }\n.v-hist .rug { position: relative; height: 10px; margin-top: 7px; }\n.v-hist .rug i { position: absolute; top: 0; width: 1px; height: 10px; background: color-mix(in srgb, var(--ink) 35%, transparent); }\n.v-hist .rug i.out { width: 2px; background: var(--orange); }\n.v-xax { position: relative; height: 22px; font-size: 12px; line-height: 16px; color: var(--muted); }\n.v-xax span { position: absolute; top: 6px; transform: translateX(-50%); white-space: nowrap; }\n.v-xax span:last-child { transform: translateX(-100%); }\n.v-xax span:first-child { transform: none; }\n.v-sc { position: relative; }\n.v-sc svg { display: block; overflow: visible; }\n.v-sc .t { position: absolute; font-size: 12px; line-height: 16px; white-space: nowrap; }\n.v-chg { display: grid; grid-template-columns: max-content minmax(0, 1fr) repeat(4, max-content); column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-chg .lane { position: relative; height: 20px; min-width: 0; }\n.v-chg .was { position: absolute; top: 3px; height: 14px; box-shadow: inset 0 0 0 1px var(--rule-strong); }\n.v-chg .lane > .v-bar { position: absolute; top: 5px; left: 2px; height: 10px; }\n.v-chg .num { text-align: right; white-space: nowrap; }\n.v-chg .sub { font-size: 12px; line-height: 16px; color: var(--muted); }\n.v-chg .head { font-size: 12px; line-height: 16px; color: var(--muted); text-align: right; }\n.v-chg .lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 22ch; }\n\n/* Numbers */\n.v-stats { display: flex; flex-wrap: wrap; gap: 20px 44px; margin-bottom: 36px; }\n.v-stat b { display: block; font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em; color: var(--c, var(--ink)); }\n.v-stat b small { font-size: 18px; font-weight: 400; color: var(--muted); letter-spacing: 0; margin-left: 6px; }\n.v-stat > span { display: block; color: var(--muted); margin-top: 2px; }\n.v-stat .delta { display: block; font-size: 12px; line-height: 16px; margin-top: 2px; color: var(--ink); }\n.v-stat .delta.bad { color: var(--red); }\n.v-stat .v-spark { margin-top: 8px; }\n.v-cmp .pair { display: flex; flex-wrap: wrap; gap: 14px 36px; margin-bottom: 14px; }\n.v-cmp .v-stat b { font-size: 26px; line-height: 32px; }\n.v-cmp .bars { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-cmp .bars .v-bar { height: 8px; }\n.v-dumb { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 14px; row-gap: 6px; align-items: center; }\n.v-dumb .lane { position: relative; height: 14px; }\n.v-dumb .ln { position: absolute; top: 7px; height: 1px; background: var(--muted); }\n.v-dumb .m { position: absolute; top: 0; width: 4px; height: 14px; }\n.v-dumb .t { position: absolute; top: -3px; white-space: nowrap; }\n.v-table { width: 100%; border-collapse: collapse; }\n.v-table th { text-align: left; font-weight: 400; color: var(--muted); padding: 0 16px 8px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }\n.v-table td { padding: 7px 16px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; white-space: nowrap; }\n.v-table th:last-child, .v-table td:last-child { padding-right: 0; }\n.v-table .num { text-align: right; }\n/* Long text truncates at 36ch; hover or focus scrolls the cell so the rest stays readable. Too-wide tables scroll in their own box. */\n.v-tscroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--rule-strong) transparent; }\n.v-table .cut { display: block; max-width: min(36ch, 40vw); overflow: hidden; text-overflow: ellipsis; outline: none; scrollbar-width: none; }\n.v-table .cut:hover, .v-table .cut:focus { overflow-x: auto; text-overflow: clip; }\n.v-table .cut::-webkit-scrollbar { display: none; }\n.v-table .mini { width: 80px; }\n.v-table .mini .v-bar { height: 8px; }\n.v-table tr.total td { font-weight: 600; border-top: 1px solid var(--rule-strong); border-bottom: 0; }\n.v-kv { display: grid; grid-template-columns: 160px max-content; }\n.v-kv > div { padding: 7px 0; border-bottom: 1px solid var(--rule); }\n.v-kv > div:nth-last-child(-n+2) { border-bottom: 0; }\n.v-kv .k { color: var(--muted); }\n"; document.head.append(s);
+  if (!document.querySelector("meta[charset]")) document.head.prepend(Object.assign(document.createElement("meta"), { httpEquiv: "content-type", content: "text/html; charset=utf-8" }));
+})();
+
+/* Dark only. On a dark T3 thread, sit transparently on its background. Anywhere else, paint the dark ground. */
+(() => {
+  const root = document.documentElement;
+  const bg = getComputedStyle(root).getPropertyValue("--background").trim();
+  if (!bg) { root.setAttribute("data-paint", ""); root.setAttribute("data-standalone", ""); return; }
+  const cx = document.createElement("canvas").getContext("2d");
+  cx.fillStyle = bg; cx.fillRect(0, 0, 1, 1);
+  const [r, g, b] = cx.getImageData(0, 0, 1, 1).data;
+  if (0.2126 * r + 0.7152 * g + 0.0722 * b > 60) root.setAttribute("data-paint", "");
+  else root.style.setProperty("--ground", bg);
+})();
+
+const V = (() => {
+  /* Color is identity, not rank. Auto-assignment skips lavender (baseline / you) and red (problems). */
+  const ORDER = ["blue", "mint", "pink", "amber", "violet", "cyan", "orange", "lime", "lavender", "red"];
+  const NAMED = { other: "var(--muted)", empty: "var(--faint)", baseline: "var(--lavender)", you: "var(--lavender)", problem: "var(--red)", ink: "var(--ink)" };
+  const keys = new Map();
+  const color = (key) => {
+    if (key == null) return "var(--ink)";
+    if (NAMED[key]) return NAMED[key];
+    if (ORDER.includes(key)) return `var(--${key})`;
+    if (!keys.has(key)) keys.set(key, ORDER[keys.size % 8]);
+    return `var(--${keys.get(key)})`;
+  };
+  const labColor = (key) => key === "empty" ? "var(--muted)" : color(key);   // faint is a fill, never text
+  const TAIL = ["other", "empty"];
+
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+  const fill = (cls = "", style = "") => `<div class="v-bar ${cls}" style="${style}"><i class="b"></i><i class="t"></i><i class="k"></i><i class="d"></i><i class="s"></i></div>`;
+  const keyOf = (r) => r.key ?? r.label;
+  /* Segment names across rows of {parts}: the given order first, then any others; only ones that occur; "other" last. */
+  const segKeys = (rows, given = []) => {
+    const all = [...new Set([...given, ...rows.flatMap((r) => Object.keys(r.parts ?? {}))])].filter((s) => rows.some((r) => r.parts?.[s] > 0));
+    return [...all.filter((s) => s !== "other"), ...all.filter((s) => s === "other")];
+  };
+  const fillCls = (px) => px < 12 ? "solid" : px < 36 ? "nodots" : "";   // short runs drop the bands they can't show
+  /* Round ticks on 1/2/5 × 10^k steps (whole minutes for durations), never past the end. */
+  const niceTicks = (lo, hi, n = 5, secs = false) => {
+    if (!(hi > lo)) return [lo];
+    const raw = (hi - lo) / n, p = 10 ** Math.floor(Math.log10(raw));
+    const step = (secs && raw > 30 ? [60, 120, 300, 600, 900, 1800, 3600, 7200] : [1, 2, 5, 10].map((m) => m * p)).find((s) => s >= raw) ?? raw;
+    const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(v); return out;
+  };
+  /* Step line with rounded corners: segs [{x0, x1, y}] in order; each riser bends in and out on a radius of up to 6px. */
+  const stepPath = (segs) => segs.map((s, i) => {
+    const n = segs[i + 1], head = i ? "" : `M${s.x0.toFixed(1)} ${s.y.toFixed(1)}`;
+    if (!n) return `${head} H${s.x1.toFixed(1)}`;
+    const dy = n.y - s.y, sg = Math.sign(dy), r = Math.min(6, Math.abs(dy) / 2, (s.x1 - s.x0) / 2, (n.x1 - n.x0) / 2);
+    if (!dy || r < 1) return `${head} H${s.x1.toFixed(1)}${dy ? ` V${n.y.toFixed(1)}` : ""}`;
+    return `${head} H${(s.x1 - r).toFixed(1)} Q${s.x1.toFixed(1)} ${s.y.toFixed(1)} ${s.x1.toFixed(1)} ${(s.y + sg * r).toFixed(1)} V${(n.y - sg * r).toFixed(1)} Q${s.x1.toFixed(1)} ${n.y.toFixed(1)} ${(s.x1 + r).toFixed(1)} ${n.y.toFixed(1)}`;
+  }).join("");
+  const monthTicks = (lo, hi) => {
+    const out = [], d = new Date(lo); d.setDate(1); d.setHours(0, 0, 0, 0);
+    if (+d < lo) d.setMonth(d.getMonth() + 1);
+    for (; +d <= hi; d.setMonth(d.getMonth() + 1)) out.push([+d, d.toLocaleDateString("en-US", { month: "short" })]);
+    return out;
+  };
+
+  const fmt = {
+    bytes: (n) => { const u = ["B", "KB", "MB", "GB", "TB"]; let i = 0; while (Math.abs(n) >= 1000 && i < 4) { n /= 1000; i++; } return `${Math.abs(n) < 10 && i ? n.toFixed(1) : Math.round(n)} ${u[i]}`; },
+    auto: (n) => n < 0 ? `−${fmt.auto(-n)}` : n >= 1e5 ? fmt.k(n) : n >= 100 || Number.isInteger(n) ? Math.round(n).toLocaleString() : String(+n.toPrecision(n >= 1 ? 3 : 2)),
+    usd: (n) => n < 0 ? `−${fmt.usd(-n)}` : n < 1000 ? `$${n.toFixed(2)}` : `$${Math.round(n).toLocaleString()}`,
+    pct: (n) => `${n < 1 && n > 0 ? n.toFixed(1) : Math.round(n)}%`,
+    int: (n) => Math.round(n).toLocaleString(),
+    k: (n) => Math.abs(n) >= 1e6 ? `${(n / 1e6).toFixed(Math.abs(n) >= 1e7 ? 0 : 1)}M` : Math.abs(n) >= 1e3 ? `${Math.round(n / 1e3)}k` : String(Math.round(n)),
+    ms: (n) => `${Math.round(n).toLocaleString()} ms`,
+    dur: (s) => s < 60 ? `${Math.round(s)}s` : s < 3600 ? `${Math.round(s / 60)}m` : `${Math.floor(s / 3600)}h ${String(Math.round((s % 3600) / 60)).padStart(2, "0")}m`,
+    secs: (s) => !s ? "0s" : s >= 60 && s % 60 === 0 && s < 3600 ? `${s / 60}m` : s < 10 ? `${s.toFixed(1)}s` : s < 60 ? `${Math.round(s)}s` : s < 3600 ? `${Math.floor(s / 60)}m ${String(Math.round(s % 60)).padStart(2, "0")}s` : fmt.dur(s),
+    short: (s) => s < 60 ? `${Math.round(s)}s` : s < 3600 ? `${Math.round(s / 60)}m` : s < 86400 ? `${Math.round(s / 3600)}h` : s % 604800 && s < 2419200 ? `${Math.round(s / 86400)}d` : `${Math.round(s / 604800)}w`,   // axis labels for durations
+    day: (v) => new Date(v).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+  };
+  /* Unknown or missing format → auto. Common aliases map to the house formatters. Non-numbers print as "—". */
+  const ALIAS = { "$": "usd", dollars: "usd", "%": "pct", percent: "pct", count: "int", number: "auto", num: "auto", s: "secs", seconds: "secs", duration: "dur", date: "day", size: "bytes" };
+  const F = (f) => {
+    if (typeof f === "function") return f;
+    const g = fmt[f] || fmt[ALIAS[String(f).toLowerCase()]] || fmt.auto;
+    return (n) => n == null || !Number.isFinite(+n) ? "—" : g(+n);
+  };
+  const signed = (f) => (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + f(Math.abs(n));   // true minus sign, not a hyphen
+
+  const root = document.getElementById("v") || document.body.appendChild(Object.assign(document.createElement("div"), { id: "v" }));
+  const at = (el) => el || root;
+  /* The house style is locked: any page stylesheet that targets the library's classes is removed, before the build and again after it. */
+  /* Removed: page styles that target the library or set a font (T3's base sheet uses var(--font…) and stays), and font stylesheet links. */
+  const purge = () => [...document.querySelectorAll("style:not([data-v]), link[rel=stylesheet]")].filter((x) => x.tagName === "LINK" ? /font/i.test(x.href)
+    : !x.textContent.includes('@font-face { font-family: "PM"') && (/\.v-|#v\b/.test(x.textContent) || (/font(-family)?\s*:|@font-face/i.test(x.textContent) && !/var\(--font/.test(x.textContent)))).map((x) => x.remove()).length;
+  const purged = purge();
+
+  const V = {
+    fmt, color,
+    /* Register entities in importance order, or pin colors: V.keys(["Steam","Users"]) or V.keys({Steam:"blue"}) */
+    keys(list) { Array.isArray(list) ? list.forEach(color) : Object.entries(list).forEach(([k, c]) => keys.set(k, c)); },
+
+    /* ── Board ───────────────────────────────────────────────── */
+    header(title, dek) {
+      title = String(title ?? "").trim().replace(/\.$/, "");   // a finding, not a sentence with a period
+      root.append(h(`<h1 class="v-title">${esc(title)}</h1>`));
+      if (dek) root.append(h(`<p class="v-dek">${esc(dek)}</p>`));
+    },
+    grid(el) { const g = h(`<div class="v-grid"></div>`); at(el).append(g); return g; },
+    /* Forms that need the width (time, spans, status, distribution, tables…) widen their panel on their own; wide:false keeps it half. */
+    panel(parent, title, note, { wide } = {}) {
+      const p = h(`<section class="v-panel${wide ? " v-wide" : ""}">${title ? `<h2>${esc(title)}${note ? `<small>${esc(note)}</small>` : ""}</h2>` : ""}</section>`);
+      if (wide === false) p.dataset.wide = "false";
+      at(parent).append(p); return p;
+    },
+    note(el, text) { at(el).append(h(`<div class="v-note">${esc(text)}</div>`)); },
+    empty(el, text) { at(el).append(h(`<div class="v-empty">${esc(text)}<div class="v-track-empty"></div></div>`)); },
+    legend(el, items) {
+      const l = h(`<div class="v-legend-inline"></div>`);
+      items.forEach((it) => { const o = typeof it === "string" ? { label: it } : it; l.append(h(`<span style="--c:${color(keyOf(o))}"><i></i>${esc(o.label)}</span>`)); });
+      at(el).append(l); return l;
+    },
+    footer(markBold, markLight, note) {
+      root.append(h(`<div class="v-foot"><div class="mark">${esc(markBold)}<span>${esc(markLight || "")}</span></div><div>${esc(note || "")}</div></div>`));
+    },
+
+    /* ── Ranked bars ─────────────────────────────────────────────
+       rows: [{label, value, key?, tag?, display?, bad?}]   bad = value text turns red (a problem)
+       opts: {format, sort:"desc"|"asc"|false, max, best:"first"|"none", rank, target:{value, label}} */
+    bars(el, rows, { format, sort = "desc", max, best = "first", rank = false, target, limit = 15 } = {}) {
+      if (rows.some((r) => r.value < 0)) return V.diverging(el, rows, { format });   // signed values need a center axis
+      const f = F(format);
+      let list = sort ? [...rows].sort((a, b) => sort === "asc" ? a.value - b.value : b.value - a.value) : [...rows];
+      list = [...list.filter((r) => !TAIL.includes(r.key)), ...TAIL.flatMap((k) => list.filter((r) => r.key === k))];   // "other", then "empty", always last
+      const cut = list.filter((r) => !TAIL.includes(r.key)).length - limit;
+      if (cut > 0) { const drop = new Set(list.filter((r) => !TAIL.includes(r.key)).slice(limit)); list = list.filter((r) => !drop.has(r)); }
+      const m = max ?? Math.max(...list.map((r) => r.value), target?.value ?? 0, 1e-9);
+      const g = h(`<div class="v-rows${rank ? " ranked" : ""}"></div>`);
+      const shown = list.map((r) => String(r.display ?? f(r.value)));
+      const reserve = `${Math.max(...shown.map((s) => s.length))}ch + 24px`;   // room for the longest value label
+      const X = (v) => `calc(${v / m} * (100% - (${reserve})))`;
+      let n = 0;
+      list.forEach((r, i) => {
+        const k = keyOf(r), tail = TAIL.includes(r.key);
+        if (rank) g.append(h(`<div class="v-rank">${tail ? "··" : String(++n).padStart(2, "0")}</div>`));
+        g.append(h(`<div class="v-lab" style="--c:${labColor(k)}" title="${esc(r.label)}">${esc(r.label)}${r.tag ? `<em>${esc(r.tag)}</em>` : ""}</div>`));
+        const bar = r.value <= 0 ? `<div class="v-bar" style="width:2px"><i class="s" style="flex:0 0 2px"></i></div>` : fill(r.key === "empty" ? "free" : "", `width:max(4px, ${X(r.value)})`);
+        const tr = h(`<div class="v-track" style="--c:${color(k)}">${bar}<span class="v-val${i === 0 && best === "first" && !tail ? " top" : ""}${r.bad ? " bad" : ""}">${esc(shown[i])}</span></div>`);
+        if (target) {
+          tr.append(h(`<div class="v-target" style="left:${X(target.value)}"></div>`));
+          if (i === 0 && target.label) tr.append(h(`<div class="v-target-lab" style="left:${X(target.value)}">${esc(target.label)}</div>`));
+        }
+        g.append(tr);
+      });
+      if (target?.label) g.style.paddingTop = "20px";
+      at(el).append(g);
+      if (cut > 0) V.note(el, `${cut} more not shown`);
+      return g;
+    },
+
+    /* rows: [{label, value (signed), key?}]  growth right, shrink left of a center axis */
+    diverging(el, rows, { format, sort = true } = {}) {
+      const f = signed(F(format));
+      const list = sort ? [...rows].sort((a, b) => b.value - a.value) : rows;
+      const m = Math.max(...list.map((r) => Math.abs(r.value)), 1e-9);
+      const reserve = `${Math.max(...list.map((r) => (r.display ?? f(r.value)).length))}ch + 24px`;
+      const g = h(`<div class="v-div"></div>`);
+      list.forEach((r, i) => {
+        const k = keyOf(r), c = color(k), w = `max(4px, calc(${Math.abs(r.value) / m} * (100% - (${reserve}))))`;
+        const bar = fill(r.value < 0 ? "rev" : "", `width:${w}`), val = `<span class="v-val">${esc(r.display ?? f(r.value))}</span>`;
+        g.append(h(`<div class="v-lab" style="--c:${c};grid-row:${i + 1}">${esc(r.label)}${r.tag ? `<em>${esc(r.tag)}</em>` : ""}</div>`));
+        g.append(h(`<div class="neg" style="--c:${c};grid-row:${i + 1};grid-column:2">${r.value < 0 ? val + bar : ""}</div>`));
+        g.append(h(`<div class="axis" style="grid-row:${i + 1}"></div>`));
+        g.append(h(`<div class="pos" style="--c:${c};grid-row:${i + 1};grid-column:4">${r.value > 0 ? bar + val : ""}</div>`));
+      });
+      at(el).append(g); return g;
+    },
+
+    /* rows: [{label, key?, parts:{segment: value}}]  composition per entity; legend above; sorted by total */
+    stacked(el, rows, { format, segments } = {}) {
+      const f = F(format);
+      const segs = segKeys(rows, segments);
+      V.legend(el, segs);
+      const list = rows.map((r) => ({ ...r, value: Object.values(r.parts).reduce((a, b) => a + b, 0) })).sort((a, b) => b.value - a.value);
+      const m = Math.max(...list.map((r) => r.value), 1e-9);
+      const reserve = `${Math.max(...list.map((r) => f(r.value).length))}ch + 24px`;
+      const g = h(`<div class="v-rows"></div>`);
+      list.forEach((r, i) => {
+        g.append(h(`<div class="v-lab" style="--c:${color(keyOf(r))}">${esc(r.label)}</div>`));
+        const st = segs.filter((s) => r.parts[s] > 0).map((s) => fill("", `--c:${color(s)};flex:${r.parts[s]} 1 0;min-width:4px`)).join("");
+        g.append(h(`<div class="v-track"><div class="v-stack" style="width:calc(${r.value / m} * (100% - (${reserve})))">${st}</div><span class="v-val${i === 0 ? " top" : ""}">${esc(f(r.value))}</span></div>`));
+      });
+      at(el).append(g); return g;
+    },
+
+    /* rows: [{label, min, median, max, key?}]  spread per entity on one shared scale, sorted by median */
+    range(el, rows, { format, max } = {}) {
+      const f = F(format);
+      const list = [...rows].sort((a, b) => a.median - b.median);
+      const m = max ?? (Math.max(...list.map((r) => r.max)) || 1);
+      const txt = list.map((r) => `${f(r.min)} · ${f(r.median)} · ${f(r.max)}`);
+      const lane = `calc(100% - ${Math.max(...txt.map((t) => t.length))}ch - 10px)`;
+      const g = h(`<div class="v-rows"></div>`);
+      list.forEach((r, i) => {
+        const c = color(keyOf(r)), P = (v) => `calc(${v / m} * (100% - 4px))`;
+        g.append(h(`<div class="v-lab" style="--c:${c}">${esc(r.label)}</div>`));
+        g.append(h(`<div class="v-track" style="--c:${c}"><div class="v-range" style="width:${lane}"><div class="ln" style="left:${P(r.min)};width:calc(${(r.max - r.min) / m} * (100% - 4px))"></div><div class="end" style="left:${P(r.min)}"></div><div class="end" style="left:${P(r.max)}"></div><div class="med" style="left:${P(r.median)}"></div></div><span class="v-val">${esc(txt[i])}</span></div>`));
+      });
+      at(el).append(g); return g;
+    },
+
+    /* ── Part to whole ───────────────────────────────────────────
+       parts: [{label, value, key?}]  key:"other" (muted) and key:"empty" (free / remaining) go last.
+       focus: label to highlight (others dim) for drill-downs. */
+    strip(el, parts, { format, total, focus, legend = true } = {}) {
+      const f = F(format);
+      const t = total ?? parts.reduce((s, p) => s + p.value, 0);
+      const s = h(`<div class="v-strip"></div>`);
+      const lg = h(`<div class="v-legend"></div>`);
+      parts.forEach((p) => {
+        const k = keyOf(p);
+        s.append(h(`<div class="${focus && focus !== p.label ? "dim" : ""}" style="--c:${color(k)};flex:${p.value} 1 0">${fill(p.key === "empty" ? "free" : "")}</div>`));
+        lg.append(h(`<div class="v-lab" style="--c:${labColor(k)}">${esc(p.label)}</div>`), h(`<div class="v-val">${esc(p.display ?? f(p.value))}</div>`), h(`<div class="v-pct">${fmt.pct((p.value / t) * 100)}</div>`));
+      });
+      at(el).append(s); if (legend) at(el).append(lg); return s;
+    },
+
+    /* One quantity against its capacity. The fill turns red only past `warn` (0–1). */
+    meter(el, { label, value, total, warn = 0.9, key = "blue", format, detail } = {}) {
+      if (!(total > 0)) return V.empty(el, `${label ?? ""} · no capacity given`);
+      const f = F(format), r = Math.min(1, Math.max(0, value / total)), c = value / total >= warn ? "var(--red)" : color(key);
+      at(el).append(h(`<div class="v-meter-head" style="--c:${c}"><b>${esc(label)}  ${fmt.pct((value / total) * 100)} full</b><span>${esc(detail ?? `${f(value)} of ${f(total)}`)}</span></div>`));
+      const m = h(`<div class="v-meter">${fill("", `--c:${c};flex:${r} 1 0`)}${fill("free", `--c:var(--faint);flex:${1 - r} 1 0`)}<div class="warn" style="left:calc(${warn * 100}% - 1px)"><span>${fmt.pct(warn * 100)} warn</span></div></div>`);
+      at(el).append(m); return m;
+    },
+    /* rows: [{label, value, total, key?}]  many capacities side by side */
+    meters(el, rows, { format, warn = 0.9 } = {}) {
+      const f = F(format), g = h(`<div class="v-meters"></div>`);
+      rows.forEach((r) => {
+        const p = r.total > 0 ? Math.min(1, Math.max(0, r.value / r.total)) : 0, c = p >= warn ? "var(--red)" : color(keyOf(r));
+        g.append(h(`<div class="v-lab" style="--c:${c}">${esc(r.label)}</div>`));
+        g.append(h(`<div class="trk">${fill("", `--c:${c};flex:${p} 1 0`)}${fill("free", `--c:var(--faint);flex:${1 - p} 1 0`)}</div>`));
+        g.append(h(`<div class="v-val" style="font-weight:600${p >= warn ? ";color:var(--red)" : ""}">${fmt.pct(p * 100)}</div>`));
+        g.append(h(`<div class="v-mut">${esc(f(r.total - r.value))} free</div>`));
+      });
+      at(el).append(g); return g;
+    },
+    /* parts as for strip; the total becomes 100 cells, one cell = 1%. Rounding remainder goes to the first part. */
+    waffle(el, parts, { format, total, title } = {}) {
+      const f = F(format), t = total ?? parts.reduce((s, p) => s + p.value, 0);
+      const cells = parts.map((p) => ({ p, n: Math.round((p.value / t) * 100) }));
+      cells[0].n = Math.max(0, cells[0].n + 100 - cells.reduce((s, c) => s + c.n, 0));
+      const w = h(`<div class="v-waffle"><div class="cells"></div><div></div></div>`);
+      cells.forEach(({ p, n }) => { for (let i = 0; i < n; i++) w.firstElementChild.append(h(`<i class="${keyOf(p) === "empty" ? "L0" : "L3"}" style="--c:${color(keyOf(p))}"></i>`)); });
+      if (title) w.lastElementChild.append(h(`<div style="font-size:18px;line-height:24px;font-weight:600;margin-bottom:10px">${esc(title)}</div>`));
+      const lg = h(`<div class="v-legend" style="margin-top:0"></div>`);
+      parts.forEach((p) => { const k = keyOf(p); lg.append(h(`<div class="v-lab" style="--c:${labColor(k)}">${esc(p.label)}</div>`), h(`<div class="v-val">${esc(p.display ?? f(p.value))}</div>`), h(`<div class="v-pct">${fmt.pct((p.value / t) * 100)}</div>`)); });
+      w.lastElementChild.append(lg);
+      at(el).append(w); return w;
+    },
+    /* Squarified treemap for more than ~7 parts. parts as for strip. Chips hide in cells under 72×48. */
+    treemap(el, parts, { format, height = 360, gap = 3 } = {}) {
+      const f = F(format), box = h(`<div class="v-tree" style="height:${height}px"></div>`);
+      at(el).append(box);
+      const Wd = box.getBoundingClientRect().width, Ht = height;
+      const items = [...parts].filter((p) => p.value > 0).sort((a, b) => b.value - a.value);
+      const scale = (Wd * Ht) / items.reduce((s, p) => s + p.value, 0);
+      const rects = [];
+      let x = 0, y = 0, w = Wd, hh = Ht, row = [];
+      const queue = items.map((p) => ({ p, a: p.value * scale }));
+      const worst = (rw, side) => { const s = rw.reduce((a, r) => a + r.a, 0); return Math.max(...rw.map((r) => Math.max((side * side * r.a) / (s * s), (s * s) / (side * side * r.a)))); };
+      const layout = (rw) => {
+        const s = rw.reduce((a, r) => a + r.a, 0);
+        if (w >= hh) { const cw = s / hh; let cy = y; rw.forEach((r) => { const rh = r.a / cw; rects.push({ p: r.p, x, y: cy, w: cw, h: rh }); cy += rh; }); x += cw; w -= cw; }
+        else { const rh = s / w; let cx = x; rw.forEach((r) => { const rwid = r.a / rh; rects.push({ p: r.p, x: cx, y, w: rwid, h: rh }); cx += rwid; }); y += rh; hh -= rh; }
+      };
+      while (queue.length) {
+        const side = Math.min(w, hh);
+        if (!row.length || worst([...row, queue[0]], side) <= worst(row, side)) row.push(queue.shift());
+        else { layout(row); row = []; }
+      }
+      if (row.length) layout(row);
+      rects.forEach((r) => {
+        const k = keyOf(r.p), right = r.x + r.w >= Wd - 0.5, bottom = r.y + r.h >= Ht - 0.5;
+        box.append(h(`<div style="--c:${color(k)};left:${r.x}px;top:${r.y}px;width:${r.w - (right ? 0 : gap)}px;height:${r.h - (bottom ? 0 : gap)}px" title="${esc(r.p.label)}: ${esc(r.p.display ?? f(r.p.value))}"><span class="chip"${r.w < 72 || r.h < 48 ? ' hidden' : ""}><b style="${k === "empty" ? "color:var(--muted)" : ""}">${esc(r.p.label)}</b><span>${esc(r.p.display ?? f(r.p.value))}</span></span></div>`));
+      });
+      return box;
+    },
+
+    /* ── Time ────────────────────────────────────────────────────
+       points: [{label, value}] or stacked [{label, parts:{k: v}}], in time order. No y-axis: the peak is labeled. */
+    columns(el, points, { format, height = 120, key = "blue", ticks = 4, peak = true } = {}) {
+      const f = F(format), stacked = points.some((p) => p.parts);
+      const tot = (p) => stacked ? Object.values(p.parts).reduce((a, b) => a + b, 0) : p.value;
+      const m = Math.max(...points.map(tot), 1e-9);
+      if (stacked) V.legend(el, segKeys(points.filter((p) => p.parts)));
+      const wrap = h(`<div class="v-cols" style="height:${height}px;--c:${color(key ?? null)};margin-top:${peak ? 20 : 0}px"></div>`);
+      let pk = 0;
+      points.forEach((p, i) => {
+        if (tot(p) > tot(points[pk])) pk = i;
+        const col = h(`<div title="${esc(p.label)}: ${esc(f(tot(p)))}"></div>`);
+        if (stacked) Object.entries(p.parts).forEach(([k, v]) => v > 0 && col.append(h(fill(`col seg ${(v / m) * height < 6 ? "solid" : ""}`, `--c:${color(k)};height:${(v / m) * 100}%`))));
+        else if (p.value > 0) col.append(h(fill("col", `height:${Math.max(1.5, (p.value / m) * 100)}%`)));
+        wrap.append(col);
+      });
+      if (peak) wrap.append(h(`<div class="v-peak" style="left:${Math.min(94, Math.max(6, ((pk + 0.5) / points.length) * 100))}%;top:${(1 - tot(points[pk]) / m) * 100}%">${esc(f(tot(points[pk])))}</div>`));
+      const step = Math.max(1, Math.round((points.length - 1) / ticks)), axis = h(`<div class="v-axis"></div>`);
+      points.forEach((p, i) => { if ((i % step === 0 && points.length - 1 - i >= step / 2) || i === points.length - 1) axis.append(h(`<span>${esc(p.label)}</span>`)); });
+      at(el).append(wrap, axis); return wrap;
+    },
+
+    /* series: [{label, key?, points:[number]}]  step lines with rounded 6px corners, labeled at the end.
+       Every line gets a light dithered area that fades toward the baseline.
+       A single series also gets a muted start value and its minimum marked. */
+    line(el, series, { format, height = 120, start, end } = {}) {
+      const cut = series.length - 6;
+      if (cut > 0) series = [...series].sort((a, b) => b.points.at(-1) - a.points.at(-1)).slice(0, 6);
+      const f = F(format), labW = 130;
+      const box = h(`<div></div>`); at(el).append(box);
+      const Wd = box.getBoundingClientRect().width - labW, all = series.flatMap((s) => s.points);
+      const lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.1 || 1;
+      const Y = (v) => Math.round(18 + (1 - (v - lo + pad) / (hi - lo + 2 * pad)) * (height - 36));
+      const n = Math.max(...series.map((s) => s.points.length)), X = (i) => Math.round((i / n) * Wd);
+      const one = series.length === 1, id = "p" + Math.random().toString(36).slice(2, 7);
+      let svg = "", areas = "";
+      series.forEach((s) => {
+        const c = color(keyOf(s));
+        const d = stepPath(s.points.map((v, i) => ({ x0: X(i), x1: X(i + 1), y: Y(v) })));
+        // Light dithered area under every line: 2px dots on the 4px grid, fading from the line to the baseline.
+        // Each series sits on its own grid offset so overlapping areas interleave instead of stacking up.
+        const k = series.indexOf(s), [ox, oy] = [[0, 0], [2, 2], [2, 0], [0, 2]][k % 4], [a0, a1] = one ? [0.55, 0.08] : [0.35, 0.04];
+        areas += `<defs><pattern id="${id}d${k}" x="${ox}" y="${oy}" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="2" height="2" fill="${c}" shape-rendering="crispEdges"/></pattern>`
+          + `<linearGradient id="${id}g${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="${a0}"/><stop offset="1" stop-color="#fff" stop-opacity="${a1}"/></linearGradient>`
+          + `<mask id="${id}m${k}"><path d="${d} V${height} H0 Z" fill="url(#${id}g${k})"/></mask></defs>`
+          + `<rect width="${Wd}" height="${height}" fill="url(#${id}d${k})" mask="url(#${id}m${k})"/>`;
+        svg += `<path d="${d}" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+        const ly = Y(s.points.at(-1)), lx = X(s.points.length);
+        svg += `<rect x="${lx - 3}" y="${ly - 3}" width="6" height="6" fill="${c}"/>`;
+        svg += one
+          ? `<text x="${lx + 10}" y="${ly + 4}" font-size="13" font-weight="700" fill="var(--ink)">${esc(f(s.points.at(-1)))}</text>`
+          : `<text x="${lx + 10}" y="${ly + 4}" font-size="13" font-weight="500" fill="${c}">${esc(s.label)} <tspan fill="var(--muted)" font-weight="400">${esc(f(s.points.at(-1)))}</tspan></text>`;
+        if (one) {
+          svg += `<text x="0" y="${Y(s.points[0]) - 8}" font-size="12" fill="var(--muted)">${esc(f(s.points[0]))}</text>`;
+          const mi = s.points.indexOf(Math.min(...s.points));
+          if (mi > 0 && mi < s.points.length - 1) svg += `<text x="${X(mi)}" y="${Math.min(height - 4, Y(s.points[mi]) + 18)}" font-size="12" fill="var(--ink)">min ${esc(f(s.points[mi]))}</text>`;
+        }
+      });
+      box.innerHTML = `<svg class="v-line" width="${Wd + labW}" height="${height}">${areas}${svg}<line x1="0" y1="${height - 0.5}" x2="${Wd}" y2="${height - 0.5}" stroke="var(--rule)"/></svg>`;
+      if (start || end) at(el).append(h(`<div class="v-axis" style="width:${Wd}px"><span>${esc(start || "")}</span><span>${esc(end || "")}</span></div>`));
+      if (cut > 0) V.note(el, `${cut} more series not shown`);
+      return box;
+    },
+
+    /* rows: [{label, cells:[values]}]  density ramp in one hue. levels:true if cells are already 0–4. */
+    heatmap(el, rows, { key = "blue", cols, levels = false } = {}) {
+      // Five steps by quantile of the non-zero cells, so one outlier can't flatten the rest.
+      const n = rows[0].cells.length, nz = rows.flatMap((r) => r.cells).filter((v) => v > 0).sort((a, b) => a - b);
+      const q = [0.25, 0.5, 0.75].map((p) => nz[Math.floor(p * (nz.length - 1))] ?? 0);
+      const lv = (v) => levels ? v : v <= 0 ? 0 : 1 + q.filter((t) => v > t).length;
+      const g = h(`<div class="v-heat" style="grid-template-columns:40px repeat(${n}, minmax(0,1fr));--c:${color(key)}"></div>`);
+      rows.forEach((r) => { g.append(h(`<div class="wd">${esc(r.label)}</div>`)); r.cells.forEach((v) => g.append(h(`<i class="L${lv(v)}"></i>`))); });
+      at(el).append(g);
+      if (cols) { const ax = h(`<div class="v-axis" style="padding-left:43px"></div>`); cols.forEach((c) => ax.append(h(`<span>${esc(c)}</span>`))); at(el).append(ax); }
+      at(el).append(h(`<div class="v-ramp" style="--c:${color(key)}">less <i class="L0"></i><i class="L1"></i><i class="L2"></i><i class="L3"></i><i class="L4"></i> more</div>`));
+      return g;
+    },
+
+    /* rows: [{label, start, end, key?}] on a numeric axis (default hours 0–24). now: draws a muted "now" rule. */
+    timeline(el, rows, { min = 0, max = 24, ticks = [[0, "00:00"], [6, "06:00"], [12, "12:00"], [18, "18:00"]], now, dur = (r) => fmt.dur((r.end - r.start) * 3600) } = {}) {
+      const g = h(`<div class="v-tl" style="${now != null ? "padding-top:20px" : ""}"></div>`), P = (v) => ((v - min) / (max - min)) * 100;
+      rows.forEach((r, i) => {
+        const c = color(keyOf(r));
+        g.append(h(`<div class="v-lab" style="--c:${c}">${esc(r.label)}</div>`));
+        const lane = h(`<div class="lane" style="--c:${c}">${fill("", `left:${P(r.start)}%;width:max(4px, ${P(r.end) - P(r.start)}%)`)}<span class="dur" style="${P(r.end) > 85 ? `right:calc(${100 - P(r.start)}% + 10px)` : `left:calc(${P(r.end)}% + 10px)`}">${esc(dur(r))}</span></div>`);
+        if (now != null && i === 0) lane.append(h(`<div class="now" style="left:${P(now)}%;height:${20 + rows.length * 20 - 6}px"><span>now</span></div>`));
+        g.append(lane);
+      });
+      g.append(h(`<div></div>`));
+      const ax = h(`<div style="position:relative;height:22px;font-size:12px;line-height:16px;color:var(--muted);border-top:1px solid var(--rule)"></div>`);
+      ticks.forEach(([v, l]) => ax.append(h(`<span style="position:absolute;top:6px;left:${P(v)}%">${esc(l)}</span>`)));
+      g.append(ax);
+      at(el).append(g); return g;
+    },
+
+    /* rows: [{label, events:[positions], key?}]  discrete events as 2px ticks; count at row end. */
+    ticks(el, rows, { span, start, end } = {}) {
+      const g = h(`<div class="v-ticks"></div>`), mx = Math.max(...rows.flatMap((r) => r.events), 0);
+      const s = span ?? (mx <= 1 ? 1 : mx);
+      rows.forEach((r, i) => {
+        const c = color(keyOf(r));
+        g.append(h(`<div class="v-lab" style="--c:${c}">${esc(r.label)}</div>`));
+        g.append(h(`<div class="lane" style="--c:${c}">${r.events.map((e) => `<i style="left:calc(${e / s} * (100% - 2px))"></i>`).join("")}</div>`));
+        g.append(h(`<div class="v-val${i === 0 ? " top" : ""}">${r.events.length}</div>`));
+      });
+      if (start || end) g.append(h(`<div></div>`), h(`<div class="v-axis" style="margin-top:0"><span>${esc(start || "")}</span><span>${esc(end || "")}</span></div>`));
+      at(el).append(g); return g;
+    },
+
+    /* Inline 80×20 sparkline (last 20 values). Returns HTML for stats or table cells.
+       floor: the value at the bottom edge (default 0). Raise it to show change in values that never get near 0. */
+    spark(values, key, { floor = 0 } = {}) {
+      const m = Math.max(...values, 1e-9), lo = Math.min(floor, m - 1e-9);
+      return `<span class="v-spark" style="--c:${color(key ?? "ink")}">${values.slice(-20).map((x) => `<i style="height:${x > lo ? Math.max(10, ((x - lo) / (m - lo)) * 100) : 0}%"></i>`).join("")}</span>`;
+    },
+
+    /* ── Spans ───────────────────────────────────────────────────
+       Positions are measured in px after layout, so short spans can drop the bands they can't show. */
+
+    /* rows: [{label, start, end, depth?, hi?, key?, spark?:[values], cols?:[text]}]  waterfall on one axis.
+       hi marks the path that sets the total: it takes the hue, every other row goes muted.
+       The longest highlighted span's value is 700. cols: headers for the extra text columns (p50, p95…). */
+    spans(el, rows, { min = 0, max, ticks, format = "secs", key = "orange", cols, sparkLabel = "history" } = {}) {
+      const f = F(format), any = rows.some((r) => r.hi), mx = Math.max(max ?? Math.max(...rows.map((r) => r.end)), min + 1e-9);
+      const len = (r) => r.end - r.start, top = rows.filter((r) => !any || r.hi).reduce((a, r) => len(r) > len(a) ? r : a);
+      const sp = rows.some((r) => r.spark), nc = cols?.length ?? 0;
+      const g = h(`<div class="v-sp" style="grid-template-columns:max-content minmax(0,1fr)${sp ? " 80px" : ""}${" max-content".repeat(nc)}"></div>`);
+      if (sp || nc) g.append(h(`<div></div>`), h(`<div></div>`), ...(sp ? [h(`<div class="head">${esc(sparkLabel)}</div>`)] : []), ...(cols ?? []).map((c) => h(`<div class="head num">${esc(c)}</div>`)));
+      const lanes = rows.map((r) => {
+        const c = any && !r.hi ? "var(--muted)" : color(r.key ?? key), d = r.depth ?? 0;
+        g.append(h(`<div class="lab${!any || r.hi ? " hi" : ""}" style="--c:${any && !r.hi ? "var(--muted)" : "var(--ink)"};padding-left:${d * 14}px" title="${esc(r.label)}">${d ? `<span class="tw">└ </span>` : ""}${esc(r.label)}</div>`));
+        const lane = h(`<div class="lane" style="--c:${c}"></div>`); g.append(lane);
+        if (sp) g.append(h(`<div>${r.spark ? V.spark(r.spark, r.key ?? key, { floor: Math.min(...r.spark) * 0.6 }) : ""}</div>`));
+        (r.cols ?? []).forEach((t, i) => g.append(h(`<div class="num${i ? " sub" : ""}">${esc(t)}</div>`)));
+        return lane;
+      });
+      g.append(h(`<div></div>`)); const ax = h(`<div class="ax"></div>`); g.append(ax);
+      at(el).append(g);
+      const W = lanes[0].getBoundingClientRect().width;
+      const reserve = Math.max(...rows.map((r) => f(len(r)).length)) * 8 + 10;   // room for the last end label
+      const S = Math.max(1, W - reserve) / (mx - min), X = (v) => (v - min) * S;
+      rows.forEach((r, i) => {
+        const x = X(r.start), w = Math.max(2, len(r) * S), flip = x + w + reserve > W + 1;
+        const cls = r === top ? "top" : (!any || r.hi) ? "hi" : "";
+        lanes[i].innerHTML = fill(fillCls(w), `left:${x}px;width:${w}px`)
+          + `<span class="dur ${cls}" style="${flip ? `right:${W - x + 10}px` : `left:${x + w + 10}px`}">${esc(f(len(r)))}</span>`;
+      });
+      (ticks ?? niceTicks(min, mx, 5, format === "secs").map((v) => [v, f(v)])).forEach(([v, l]) => ax.append(h(`<span style="left:${X(v)}px">${esc(l)}</span>`)));
+      return g;
+    },
+
+    /* rows: [{label, key?, spans:[[start, end], ...]}]  one lane per kind, sorted by total time.
+       idle: gaps longer than this (same unit) collect in a last "idle" lane. Count and total sit in fixed columns. */
+    lanes(el, rows, { min, max, ticks, format = "secs", idle } = {}) {
+      const f = F(format), all = rows.flatMap((r) => r.spans);
+      const lo = min ?? Math.min(...all.map((s) => s[0])), hi = Math.max(max ?? Math.max(...all.map((s) => s[1])), lo + 1e-9);
+      const tot = (r) => r.spans.reduce((a, [s, e]) => a + e - s, 0);
+      const list = [...rows].sort((a, b) => tot(b) - tot(a));
+      if (idle != null) {
+        const gaps = []; let end = lo;
+        [...all].sort((a, b) => a[0] - b[0]).forEach(([s, e]) => { if (s - end > idle) gaps.push([end, s]); end = Math.max(end, e); });
+        if (gaps.length) list.push({ label: "idle", key: "empty", spans: gaps, idle: true });
+      }
+      const g = h(`<div class="v-sp" style="grid-template-columns:max-content minmax(0,1fr) max-content 7ch"></div>`);
+      g.append(h(`<div></div>`), h(`<div></div>`), h(`<div class="head num">n</div>`), h(`<div class="head">time</div>`));
+      const lanes = list.map((r) => {
+        const c = r.idle ? "var(--muted)" : color(keyOf(r));
+        g.append(h(`<div class="lab${r.idle ? "" : " hi"}" style="--c:${c}">${esc(r.label)}</div>`));
+        const lane = h(`<div class="lane" style="--c:${color(keyOf(r))}"></div>`); g.append(lane);
+        g.append(h(`<div class="num" style="color:${r.idle ? "var(--muted)" : "var(--ink)"}">${r.spans.length}</div>`), h(`<div class="sub">${esc(f(tot(r)))}</div>`));
+        return lane;
+      });
+      g.append(h(`<div></div>`)); const ax = h(`<div class="ax"></div>`); g.append(ax);
+      at(el).append(g);
+      const W = lanes[0].getBoundingClientRect().width, S = W / (hi - lo), X = (v) => (v - lo) * S;
+      list.forEach((r, i) => {
+        const px = r.spans.map(([s, e]) => [X(s), Math.max(X(s) + 2, X(e))]).sort((a, b) => a[0] - b[0]), merged = [];
+        px.forEach(([a, b]) => merged.length && a < merged.at(-1)[1] + 1 ? (merged.at(-1)[1] = Math.max(merged.at(-1)[1], b)) : merged.push([a, b]));
+        lanes[i].innerHTML = merged.map(([a, b]) => r.idle ? `<i class="idle" style="left:${a}px;width:${b - a}px"></i>`
+          : b - a >= 36 ? fill("", `left:${a}px;width:${b - a}px`) : `<i style="left:${a}px;width:${b - a}px"></i>`).join("");
+      });
+      (ticks ?? niceTicks(0, hi - lo, 5, format === "secs").map((v) => [lo + v, f(v)])).forEach(([v, l]) => ax.append(h(`<span style="left:${X(v)}px">${esc(l)}</span>`)));
+      return g;
+    },
+
+    /* rows: [{label, start, end, done (0–1)}]  plans on a date axis (Date or ms). The done share is solid,
+       what's left is dots, a 2px mark sits on the due date. Finished rows go muted; past due and unfinished go red. */
+    gantt(el, rows, { min, max, today = Date.now(), ticks, key = "mint", date = fmt.day } = {}) {
+      const n = (v) => +v, lo = n(min ?? Math.min(...rows.map((r) => n(r.start)))), hi = Math.max(n(max ?? Math.max(...rows.map((r) => n(r.end)))), lo + 864e5);
+      const g = h(`<div class="v-sp" style="grid-template-columns:max-content minmax(0,1fr) 36px max-content;padding-top:20px"></div>`);
+      const lanes = rows.map((r) => {
+        const fin = r.done >= 1, late = !fin && n(r.end) < n(today);
+        g.append(h(`<div class="lab" style="--c:${fin ? "var(--muted)" : "var(--ink)"}">${esc(r.label)}</div>`));
+        const lane = h(`<div class="lane"></div>`); g.append(lane);
+        const days = Math.round((n(today) - n(r.end)) / 864e5);
+        g.append(h(`<div class="num" style="color:${fin ? "var(--muted)" : late ? "var(--red)" : "var(--ink)"};font-weight:${late ? 600 : 400}">${fin ? "done" : Math.round(r.done * 100) + "%"}</div>`),
+          h(`<div class="sub" style="${late ? "color:var(--red)" : ""}">${esc(late ? `late ${days}d` : date(r.end))}</div>`));
+        return { lane, fin, late };
+      });
+      g.append(h(`<div></div>`)); const ax = h(`<div class="ax"></div>`); g.append(ax);
+      at(el).append(g);
+      const W = lanes[0].lane.getBoundingClientRect().width, S = W / (hi - lo), X = (v) => (n(v) - lo) * S;
+      rows.forEach((r, i) => {
+        const { lane, fin, late } = lanes[i], x = X(r.start), w = Math.max(4, X(r.end) - x), dn = Math.round((w - 2) * Math.min(1, r.done));
+        const c = fin ? "var(--muted)" : color(key), rest = late ? "var(--red)" : c;
+        lane.innerHTML = `<div class="gt" style="left:${x}px;width:${w}px;--c:${c}">${dn ? `<div class="dn" style="width:${dn}px"></div>` : ""}${w - 2 - dn > 0 ? `<div class="lf" style="--c:${rest}"></div>` : ""}<div class="due" style="--c:${rest};background:${rest}"></div></div>`;
+      });
+      (ticks ?? (lo > 1e11 ? monthTicks(lo, hi) : niceTicks(lo, hi, 4).map((v) => [v, String(v)]))).forEach(([v, l]) => ax.append(h(`<span style="left:${X(v)}px">${esc(l)}</span>`)));
+      if (n(today) >= lo && n(today) <= hi) {
+        const a = lanes[0].lane, b = lanes.at(-1).lane, gx = a.getBoundingClientRect().left - g.getBoundingClientRect().left;
+        g.append(h(`<div class="today" style="left:${gx + X(today)}px;top:${a.offsetTop}px;height:${b.offsetTop + b.offsetHeight - a.offsetTop}px"><span>today</span></div>`));
+      }
+      return g;
+    },
+
+    /* ── Status ──────────────────────────────────────────────────
+       rows: [{label, runs:["ok"|"fail"|"skip"|null, ...]}]  oldest first; null = not due.
+       Up to 40 runs: 10px cells on a 12px pitch. More: 2px bars on a 4px pitch, and the rate keeps one decimal. */
+    status(el, rows, { start, end } = {}) {
+      const dense = Math.max(...rows.map((r) => r.runs.length)) > 40;
+      const g = h(`<div class="v-st${dense ? " dense" : ""}"></div>`);
+      rows.forEach((r) => {
+        const c = (s) => r.runs.filter((x) => x === s).length, ok = c("ok"), fail = c("fail"), skip = c("skip"), bad = fail >= 3;
+        const rate = ok + fail ? (ok / (ok + fail)) * 100 : 100;
+        g.append(h(`<div class="v-lab" style="--c:var(--ink);font-weight:400">${esc(r.label)}</div>`));
+        g.append(h(`<div class="cells">${r.runs.map((s) => s ? `<i class="s-${s}"></i>` : `<i></i>`).join("")}</div>`));
+        g.append(h(`<div class="v-val" style="text-align:right;${bad ? "color:var(--red);font-weight:600" : ""}">${dense && rate < 100 ? rate.toFixed(1) : Math.round(rate)}%</div>`));
+        g.append(h(`<div class="v-mut" style="font-size:12px;${bad ? "color:var(--red)" : ""}">${fail ? `${fail} failed` : skip ? `${skip} skipped` : "all ok"}</div>`));
+      });
+      if (start || end) g.append(h(`<div></div>`), h(`<div class="v-axis" style="margin-top:0"><span>${esc(start || "")}</span><span>${esc(end || "")}</span></div>`));
+      at(el).append(g); return g;
+    },
+    /* Legend for status marks; put it above the grid. */
+    statusKey(el) {
+      at(el).append(h(`<div class="v-legend-inline"><span class="v-mark" style="color:var(--mint)"><i class="s-ok"></i>ok</span><span class="v-mark" style="color:var(--red)"><i class="s-fail"></i>failed</span><span class="v-mark" style="color:var(--muted)"><i class="s-skip"></i>skipped</span><span class="v-mut" style="font-weight:400">blank = not due</span></div>`));
+    },
+
+    /* ── Numbers ─────────────────────────────────────────────────
+       items: [{value:"$41.20", unit?, label, delta?, bad?, key?, spark?:[...]}]  value/delta are preformatted text */
+    /* ── Distribution & change ───────────────────────────────── */
+    /* Small stat row inside a panel: items [{value, label, key?}] */
+    summary(el, items) {
+      const s = h(`<div class="v-sum"></div>`);
+      items.forEach((it) => s.append(h(`<div ${it.key ? `style="--c:${color(it.key)}"` : ""}><b>${esc(it.value)}</b><span>${esc(it.label)}</span></div>`)));
+      at(el).append(s); return s;
+    },
+
+    /* values: [number]  histogram + one tick per value. Outliers (past Q3 + 1.5×IQR) turn orange;
+       p50 and p95 get rules; the most extreme value is labeled. A stat row sits on top.
+       Bins: ~40 of a round width. Columns use the house fill; short ones go solid. */
+    dist(el, values, { format, key = "blue", noun = "values" } = {}) {
+      const f = F(format), xs = [...values].sort((a, b) => a - b), n = xs.length, time = ["secs", "dur", "ms"].includes(format);
+      if (n < 5) { V.summary(el, [{ value: String(n), label: noun }, ...xs.map((v) => ({ value: f(v), label: "" }))]); return V.note(el, "too few values for a histogram"); }
+      const q = (p) => { const i = (n - 1) * p, lo = Math.floor(i); return xs[lo] + (xs[Math.min(lo + 1, n - 1)] - xs[lo]) * (i - lo); };
+      const p50 = q(0.5), p95 = q(0.95), fence = q(0.75) + 1.5 * (q(0.75) - q(0.25));
+      const raw = (xs[n - 1] - xs[0]) / Math.min(50, Math.max(10, Math.round(n / 4))) || 1, p = 10 ** Math.floor(Math.log10(raw));
+      const step = (format === "secs" && raw >= 1 ? [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600] : [1, 2, 5, 10].map((m) => m * p))
+        .reduce((a, s) => Math.abs(Math.log(s / raw)) < Math.abs(Math.log(a / raw)) ? s : a);   // nearest round width
+      const lo = Math.floor(xs[0] / step) * step, nb = Math.max(1, Math.floor((xs[n - 1] - lo) / step) + 1);
+      const hi = lo + nb * step, counts = Array(nb).fill(0);
+      xs.forEach((v) => counts[Math.min(nb - 1, Math.floor((v - lo) / step))]++);
+      const out = xs.filter((v) => v > fence).length, m = Math.max(...counts), X = (v) => `${((v - lo) / (hi - lo)) * 100}%`;
+      V.summary(el, [{ value: n.toLocaleString(), label: noun }, { value: f(p50), label: "median" }, { value: f(p95), label: "p95" },
+        ...(out ? [{ value: `${out} · ${fmt.pct((out / n) * 100)}`, label: `${time ? "slower than" : "above"} ${f(fence)}`, key: "orange" }] : [])]);
+      const w = h(`<div class="v-hist"><div class="cols" style="grid-template-columns:repeat(${nb},1fr)"></div><div class="rug"></div><div class="v-xax"></div></div>`);
+      counts.forEach((c, i) => {
+        const px = Math.max(2, (c / m) * 120), o = lo + i * step >= fence;
+        w.firstChild.insertAdjacentHTML("beforeend", `<div title="${esc(f(lo + i * step))}–${esc(f(lo + (i + 1) * step))}: ${c}">${c ? fill(`col ${fillCls(px)}`, `--c:${o ? "var(--orange)" : color(key)};height:${px}px;flex:none`) : ""}</div>`);
+      });
+      [[p50, "p50"], [p95, "p95"]].forEach(([v, l]) => w.append(h(`<div class="mk ${l}" style="left:${X(v)}"><span>${l} ${esc(f(v))}</span></div>`)));
+      if (out) w.append(h(`<div class="lab" style="color:var(--orange);right:calc(100% - ${X(xs[n - 1])} + 8px);top:${24 + 120 - Math.max(2, (counts[nb - 1] / m) * 120) - 36}px">${time ? "slowest" : "max"} ${esc(f(xs[n - 1]))}</div>`));
+      w.children[1].innerHTML = [...new Set(xs.map((v) => Math.round(((v - lo) / (hi - lo)) * 1000)))].map((k) => `<i class="${(k / 1000) * (hi - lo) + lo > fence ? "out" : ""}" style="left:${k / 10}%"></i>`).join("");
+      at(el).append(w);
+      const nt = Math.max(2, Math.min(6, Math.floor(w.getBoundingClientRect().width / (Math.max(f(lo).length, f(hi).length) * 8 + 40))));
+      w.children[2].innerHTML = niceTicks(lo, hi, nt, format === "secs").map((v) => `<span style="left:${X(v)}">${esc(f(v))}</span>`).join("");
+      return w;
+    },
+
+    /* points: [{x, y, label?}]  one hue, 4px squares. An axis goes log once it spans more than 2 decades.
+       trend: the median of y per x bin (half-decades on a log axis), drawn as an ink step line.
+       Outliers (more than 1 decade, or 3× the bin spread, from that median) turn orange; labeled ones get "label · y".
+       x / y: {format, label, log?} */
+    scatter(el, points, { x: xo = {}, y: yo = {}, key = "blue", height = 280, trend = true } = {}) {
+      const T = (o) => o.format === "secs" || o.format === "dur" ? fmt.short : F(o.format), fx = T(xo), fy = T(yo);
+      const axis = (vals, o) => {
+        const lo = Math.min(...vals), hi = Math.max(...vals, lo + 1e-9), log = (o.log ?? hi / lo > 100) && lo > 0;
+        if (!log) { const t = niceTicks(Math.min(0, lo), hi, 5, o.format === "secs"); return { log, lo: Math.min(0, lo), hi: Math.max(hi, t[t.length - 1]), ticks: t }; }
+        const time = o.format === "secs" || o.format === "dur";
+        const cand = time ? [1, 10, 60, 900, 3600, 14400, 86400, 604800, 2419200] : Array.from({ length: 13 }, (_, i) => 10 ** (i - 3));
+        const L = Math.log10(lo), H = Math.log10(hi), pad = (H - L) * 0.04;
+        return { log, lo: 10 ** (L - pad), hi: 10 ** (H + pad), ticks: cand.filter((v) => v >= 10 ** (L - pad) && v <= 10 ** (H + pad)) };
+      };
+      const ax = axis(points.map((p) => p.x), xo), ay = axis(points.map((p) => p.y), yo);
+      const pts = points.filter((p) => (!ax.log || p.x > 0) && (!ay.log || p.y > 0));
+      const N = (a, v) => a.log ? (Math.log10(v) - Math.log10(a.lo)) / (Math.log10(a.hi) - Math.log10(a.lo)) : (v - a.lo) / (a.hi - a.lo);
+      const w = h(`<div class="v-sc"></div>`); at(el).append(w);
+      const L = Math.max(...ay.ticks.map((v) => fy(v).length)) * 8 + 10, W = w.getBoundingClientRect().width, Wp = W - L - 110;
+      const X = (v) => L + N(ax, v) * Wp, Y = (v) => 8 + (1 - N(ay, v)) * height;
+      const edges = ax.log ? Array.from({ length: Math.ceil((Math.log10(ax.hi) - Math.log10(ax.lo)) * 2) + 2 }, (_, i) => 10 ** (Math.floor(Math.log10(ax.lo) * 2) / 2 + i / 2)) : niceTicks(ax.lo, ax.hi, 8);
+      const med = (a) => { const s = [...a].sort((p, q) => p - q), k = (s.length - 1) / 2; return (s[Math.floor(k)] + s[Math.ceil(k)]) / 2; };
+      const bins = edges.slice(0, -1).map((a, i) => { const ys = pts.filter((p) => p.x >= a && p.x < edges[i + 1]).map((p) => p.y); return { a, b: edges[i + 1], ys, m: ys.length >= 5 ? med(ys) : null }; }).filter((b) => b.m != null);
+      const near = (p) => bins.reduce((a, b) => Math.abs(N(ax, (b.a + b.b) / 2) - N(ax, p.x)) < Math.abs(N(ax, (a.a + a.b) / 2) - N(ax, p.x)) ? b : a, bins[0]);
+      const dev = (p) => bins.length ? (ay.log ? Math.abs(Math.log10(p.y / near(p).m)) : Math.abs(p.y - near(p).m)) : 0;
+      const spread = ay.log ? 1 : 4 * (med(pts.map(dev)) || 1e-9);   // log: 1 decade · linear: 4× the typical distance
+      const resid = (p) => dev(p) / spread;
+      const isOut = (p) => resid(p) > 1;
+      const sq = (p, s) => `M${(X(p.x) - s / 2).toFixed(1)} ${(Y(p.y) - s / 2).toFixed(1)}h${s}v${s}h-${s}z`;
+      let svg = ax.ticks.map((v) => `<rect x="${X(v).toFixed(1)}" y="8" width="1" height="${height}" fill="var(--rule)"/>`).join("")
+        + ay.ticks.map((v) => `<rect x="${L}" y="${Y(v).toFixed(1)}" width="${Wp}" height="1" fill="var(--rule)"/>`).join("")
+        + `<path d="${pts.filter((p) => !isOut(p)).map((p) => sq(p, 4)).join("")}" fill="${color(key)}"/>`
+        + `<path d="${pts.filter(isOut).map((p) => sq(p, 6)).join("")}" fill="var(--orange)"/>`;
+      let labs = ay.ticks.map((v) => `<span class="t" style="left:0;width:${L - 10}px;text-align:right;top:${Y(v) - 8}px;color:var(--muted)">${esc(fy(v))}</span>`).join("")
+        + ax.ticks.map((v) => `<span class="t" style="left:${X(v)}px;top:${height + 14}px;transform:translateX(-50%);color:var(--muted)">${esc(fx(v))}</span>`).join("");
+      if (xo.label) labs += `<span class="t" style="right:${W - L - Wp}px;top:${height + 34}px;color:var(--muted)">${esc(xo.label)} →</span>`;
+      if (yo.label) labs += `<span class="t" style="left:${L}px;top:-20px;color:var(--muted)">↑ ${esc(yo.label)}</span>`;
+      if (trend && bins.length > 1) {
+        svg += `<path d="${stepPath(bins.map((b) => ({ x0: X(b.a), x1: X(b.b), y: Y(b.m) })))}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+        const e = bins[bins.length - 1]; labs += `<span class="t" style="left:${X(e.b) + 8}px;top:${Y(e.m) - 8}px">median ${esc(fy(e.m))}</span>`;
+      }
+      pts.filter((p) => p.label && isOut(p)).sort((a, b) => resid(b) - resid(a)).slice(0, 3).forEach((p) => {
+        const flip = X(p.x) > L + Wp - 140;
+        labs += `<span class="t" style="${flip ? `right:${W - X(p.x) + 8}px` : `left:${X(p.x) + 8}px`};top:${Y(p.y) - 8}px">${esc(p.label)} · ${esc(fy(p.y))}</span>`;
+      });
+      w.style.height = `${height + 8 + (xo.label ? 56 : 36)}px`; if (yo.label) w.style.marginTop = "24px";
+      w.innerHTML = `<svg width="${W}" height="${height + 16}">${svg}</svg>${labs}`;
+      return w;
+    },
+
+    /* rows: [{label, before, after}]  before = 1px outline, after = fill inset inside it, one scale from zero.
+       better: "lower" | "higher" picks which direction is mint. A missing side (0) reads "new" / "removed". */
+    change(el, rows, { format, better = "lower", labels = ["before", "after"], key = "blue" } = {}) {
+      const f = F(format), sf = signed(f);
+      const B = rows.reduce((a, r) => a + (r.before || 0), 0), A = rows.reduce((a, r) => a + (r.after || 0), 0);
+      const good = (d) => (d < 0) === (better === "lower");
+      const tone = (d, base) => base && Math.abs(d / base) < 0.01 ? "var(--muted)" : good(d) ? "var(--mint)" : "var(--red)";
+      V.summary(el, [{ value: f(B), label: labels[0], key: "other" }, { value: f(A), label: labels[1] },
+        { value: sf(A - B), label: B ? `${A >= B ? "+" : "−"}${fmt.pct(Math.abs(A / B - 1) * 100)} total` : "all new", key: B && Math.abs(A / B - 1) < 0.01 ? "other" : good(A - B) ? "mint" : "red" }]);
+      const list = [...rows].sort((a, b) => (b.before || 0) - (a.before || 0) || (b.after || 0) - (a.after || 0));
+      const m = Math.max(...list.flatMap((r) => [r.before || 0, r.after || 0]), 1e-9);
+      const g = h(`<div class="v-chg"><div></div><div></div><div class="head">${esc(labels[0])}</div><div class="head">${esc(labels[1])}</div><div class="head" style="grid-column:span 2">change</div></div>`);
+      const lanes = list.map((r) => {
+        const b = r.before || 0, a = r.after || 0, d = a - b, lane = h(`<div class="lane" style="--c:${color(key)}"></div>`);
+        g.append(h(`<div class="lab" title="${esc(r.label)}">${esc(r.label)}</div>`), lane,
+          h(`<div class="num sub">${b ? esc(f(b)) : "—"}</div>`), h(`<div class="num">${a ? esc(f(a)) : "—"}</div>`),
+          h(`<div class="num" style="color:${tone(d, b)}">${esc(sf(d))}</div>`),
+          h(`<div class="num sub">${!b ? "new" : !a ? "removed" : `${d >= 0 ? "+" : "−"}${fmt.pct(Math.abs(d / b) * 100)}`}</div>`));
+        return [lane, b, a];
+      });
+      at(el).append(g);
+      const S = lanes[0][0].getBoundingClientRect().width / m;
+      lanes.forEach(([lane, b, a]) => {
+        const aw = Math.max(2, a * S - 4);
+        lane.innerHTML = (b ? `<div class="was" style="width:${b * S}px"></div>` : "") + (a ? fill(fillCls(aw), `width:${aw}px`) : "");
+      });
+      return g;
+    },
+
+    stats(el, items) {
+      const s = h(`<div class="v-stats"></div>`);
+      items.forEach((it) => s.append(h(`<div class="v-stat" ${it.key ? `style="--c:${color(it.key)}"` : ""}><b>${esc(it.value)}${it.unit ? `<small>${esc(it.unit)}</small>` : ""}</b><span>${esc(it.label)}</span>${it.delta ? `<span class="delta${it.bad ? " bad" : ""}">${esc(it.delta)}</span>` : ""}${it.spark ? V.spark(it.spark, it.key) : ""}</div>`)));
+      at(el).append(s); return s;
+    },
+    /* Current vs previous. Previous is always lavender (baseline). */
+    compare(el, { current, previous, labels = ["this week", "last week"], key, format } = {}) {
+      current = +current || 0; previous = +previous || 0;
+      const f = F(format), c = color(key ?? "ink"), m = Math.max(current, previous, 1e-9), up = current >= previous;
+      const w = h(`<div class="v-cmp"><div class="pair">
+        <div class="v-stat"><b>${esc(f(current))}</b><span>${esc(labels[0])}</span></div>
+        <div class="v-stat" style="--c:var(--lavender)"><b>${esc(f(previous))}</b><span>${esc(labels[1])}</span></div>
+        <div class="v-stat"><b>${previous ? `${up ? "+" : "−"}${Math.round(Math.abs(current / previous - 1) * 100)}%` : "new"}</b><span>${up ? "+" : "−"}${esc(f(Math.abs(current - previous)))} vs ${esc(labels[1])}</span></div></div>
+        <div class="bars"><span class="v-mut">${esc(labels[0])}</span><div>${fill("", `--c:${c};width:${(current / m) * 100}%;height:8px`)}</div>
+        <span class="v-mut">${esc(labels[1])}</span><div>${fill("", `--c:var(--lavender);width:${(previous / m) * 100}%;height:8px`)}</div></div></div>`);
+      at(el).append(w); return w;
+    },
+    /* rows: [{label, from, to, key?}]  previous (lavender) → current (entity color) on one scale; order kept as given */
+    dumbbell(el, rows, { format, max } = {}) {
+      const f = F(format), m = max ?? (Math.max(...rows.flatMap((r) => [r.from, r.to])) || 1);
+      const pad = Math.max(...rows.flatMap((r) => [f(r.from).length, f(r.to).length])) + 2;
+      const P = (v) => `calc(${pad}ch + ${v / m} * (100% - ${2 * pad}ch - 4px))`;
+      const g = h(`<div class="v-dumb"></div>`);
+      rows.forEach((r) => {
+        const c = color(keyOf(r)), lo = Math.min(r.from, r.to), hi = Math.max(r.from, r.to);
+        g.append(h(`<div class="v-lab" style="--c:${c}">${esc(r.label)}</div>`));
+        g.append(h(`<div class="lane">
+          <div class="ln" style="left:${P(lo)};width:calc(${(hi - lo) / m} * (100% - ${2 * pad}ch - 4px))"></div>
+          <div class="m" style="left:${P(r.from)};background:var(--lavender)"></div><div class="m" style="left:${P(r.to)};background:${c}"></div>
+          <span class="t" style="right:calc(100% - ${P(lo)} + 8px);color:${lo === r.from ? "var(--lavender)" : "var(--ink)"}">${esc(f(lo))}</span>
+          <span class="t" style="left:calc(${P(hi)} + 12px);color:${hi === r.to && hi !== r.from ? "var(--ink)" : "var(--lavender)"}">${esc(f(hi))}</span></div>`));
+      });
+      at(el).append(g); return g;
+    },
+
+    /* cols: [{label, num?, bar?, format?}]  rows: arrays of cells; a cell may be {text, key} or {value}.
+       A `bar` column takes a number and draws an 80px mini bar in the color of the row's first cell. total: row of text */
+    table(el, cols, rows, { total } = {}) {
+      const val = (v) => +(typeof v === "object" && v ? v.value : v) || 0;
+      const maxes = cols.map((c, i) => c.bar ? Math.max(...rows.map((r) => val(r[i])), 1e-9) : 0);
+      const cell = (c, v, i, row) => {
+        const o = typeof v === "object" && v ? v : { value: v };
+        if (c.bar) {
+          const first = typeof row[0] === "object" && row[0] ? row[0] : { text: row[0] };
+          const n = val(v);
+          return `<td class="mini" style="--c:${color(first.key ?? first.text)}">${n > 0 ? fill("", `width:${Math.max((n / maxes[i]) * 80, 4)}px`) : ""}</td>`;
+        }
+        if (o.status) {
+          const sc = { ok: "var(--mint)", fail: "var(--red)", skip: "var(--muted)" }[o.status];
+          return `<td><span class="v-mark" style="color:${sc}"><i class="s-${o.status}"></i>${esc(o.text ?? { ok: "ok", fail: "failed", skip: "skipped" }[o.status])}</span></td>`;
+        }
+        const txt = String(o.text ?? (c.format ? F(c.format)(o.value) : o.value) ?? "");
+        const body = !c.num && txt.length > 36 ? `<span class="cut" tabindex="0" title="${esc(txt)}">${esc(txt)}</span>` : esc(txt);
+        return `<td class="${c.num ? "num" : ""}" ${o.key ? `style="color:${labColor(o.key)};font-weight:500"` : ""}>${body}</td>`;
+      };
+      const t = h(`<table class="v-table"><thead><tr>${cols.map((c) => `<th class="${c.num ? "num" : ""}">${esc(c.label)}</th>`).join("")}</tr></thead><tbody></tbody></table>`);
+      rows.forEach((r) => t.tBodies[0].insertAdjacentHTML("beforeend", `<tr>${cols.map((c, i) => cell(c, r[i], i, r)).join("")}</tr>`));
+      if (total) t.tBodies[0].insertAdjacentHTML("beforeend", `<tr class="total">${cols.map((c, i) => `<td class="${c.num ? "num" : ""}">${esc(total[i] ?? "")}</td>`).join("")}</tr>`);
+      const box = h(`<div class="v-tscroll"></div>`); box.append(t);
+      at(el).append(box); return t;
+    },
+    /* pairs: [[key, value], ...]  facts about one thing, not for comparing many */
+    kv(el, pairs) {
+      const g = h(`<div class="v-kv"></div>`);
+      pairs.forEach(([k, v]) => g.append(h(`<div class="k">${esc(k)}</div>`), h(`<div>${esc(v)}</div>`)));
+      at(el).append(g); return g;
+    },
+  };
+
+  /* ── Guards ──────────────────────────────────────────────────
+     Every helper is wrapped. Data may come as rows, an object map ({a: 1}), [label, value] pairs or bare numbers;
+     numbers may be strings ("1,204"); NaN drops out or counts as 0. Parts past 7 (strips, waffles) or 6 (stack
+     segments) fold into "other". Wide forms widen their panel. Empty data draws "no data"; a helper that throws
+     draws a red note in its place, so one bad panel never blanks the page. */
+  const num = (v) => { const n = typeof v === "string" ? parseFloat(v.replace(/[,\s_$%]/g, "")) : +v; return v === "" || v == null ? NaN : Number.isFinite(n) ? n : NaN; };
+  const n0 = (v) => num(v) || 0, pos = (v) => Math.max(0, n0(v));
+  const when = (v) => typeof v === "string" && !/^-?[\d.]+$/.test(v.trim()) ? Date.parse(v) : num(v);   // dates as Date, ms or ISO text
+  const asRows = (d, fields = ["value"]) => {
+    if (d && typeof d === "object" && !Array.isArray(d)) d = Object.entries(d);
+    if (!Array.isArray(d)) return [];
+    return d.filter((r) => r != null).map((r, i) => {
+      if (Array.isArray(r)) { const v = fields.length > 1 && Array.isArray(r[1]) ? r[1] : r.slice(1); return { label: String(r[0] ?? ""), ...(TAIL.includes(r[0]) ? { key: r[0] } : {}), ...Object.fromEntries(fields.map((f, j) => [f, v[j]])) }; }
+      if (typeof r !== "object") return { label: String(i + 1), [fields[0]]: r };
+      const o = { ...r, label: String(r.label ?? r.name ?? r.key ?? "") };
+      if (o.key == null && TAIL.includes(o.label)) o.key = o.label;   // {other: n, empty: n} keep their tail styling
+      if (fields[0] === "value" && o.value == null) o.value = Object.entries(r).find(([k, v]) => k !== "label" && num(v) === num(v))?.[1];   // {name, bytes} → bytes
+      return o;
+    });
+  };
+  const fold = (list, max = 7) => {
+    const body = list.filter((r) => !TAIL.includes(r.key));
+    if (body.length <= max) return list;
+    const keep = new Set([...body].sort((a, b) => b.value - a.value).slice(0, max - 1)), rest = list.filter((r) => !keep.has(r) && r.key !== "empty");
+    return [...list.filter((r) => keep.has(r)), { label: `${rest.length} others`, key: "other", value: rest.reduce((a, r) => a + r.value, 0) }, ...list.filter((r) => r.key === "empty")];
+  };
+  const parts = (p) => Object.fromEntries(Object.entries(p ?? {}).map(([k, v]) => [k, pos(v)]));
+  const foldParts = (list, max = 6) => {
+    const tot = {}; list.forEach((r) => Object.entries(r.parts).forEach(([k, v]) => (tot[k] = (tot[k] || 0) + v)));
+    const segs = Object.keys(tot).filter((k) => k !== "other");
+    if (segs.length + ("other" in tot) <= max) return list;
+    const keep = new Set(segs.sort((a, b) => tot[b] - tot[a]).slice(0, max - 1));
+    return list.map((r) => { const p = {}; Object.entries(r.parts).forEach(([k, v]) => keep.has(k) ? (p[k] = v) : (p.other = (p.other || 0) + v)); return { ...r, parts: p }; });
+  };
+  const ST = { ok: "ok", pass: "ok", passed: "ok", success: "ok", succeeded: "ok", true: "ok", fail: "fail", failed: "fail", failure: "fail", error: "fail", false: "fail", skip: "skip", skipped: "skip", cancelled: "skip", canceled: "skip" };
+  const span2 = (a, b) => a <= b ? [a, b] : [b, a];
+  const NORM = {
+    bars: (d) => asRows(d).map((r) => ({ ...r, value: num(r.value) })).filter((r) => Number.isFinite(r.value)),
+    diverging: (d) => asRows(d).map((r) => ({ ...r, value: num(r.value) })).filter((r) => Number.isFinite(r.value)),
+    treemap: (d) => asRows(d).map((r) => ({ ...r, value: pos(r.value) })).filter((r) => r.value > 0),
+    strip: (d) => fold(asRows(d).map((r) => ({ ...r, value: pos(r.value) })).filter((r) => r.value > 0)),
+    waffle: (d) => fold(asRows(d).map((r) => ({ ...r, value: pos(r.value) })).filter((r) => r.value > 0)),
+    stacked: (d) => foldParts(asRows(d, ["parts"]).map((r) => ({ ...r, parts: parts(r.parts) }))),
+    columns: (d) => { const l = asRows(d).map((r) => r.parts ? { ...r, parts: parts(r.parts) } : { ...r, value: pos(r.value) }); return l.some((r) => r.parts) ? foldParts(l.map((r) => ({ ...r, parts: r.parts ?? {} }))) : l; },
+    range: (d) => asRows(d, ["min", "median", "max"]).map((r) => { const [min, median, max] = [r.min, r.median, r.max].map(n0).sort((a, b) => a - b); return { ...r, min, median, max }; }),
+    meters: (d) => asRows(d, ["value", "total"]).map((r) => ({ ...r, value: pos(r.value), total: pos(r.total) })),
+    line: (d) => {
+      if (Array.isArray(d) && d.every((v) => v == null || typeof v !== "object" || !("points" in v || "values" in v))) d = [{ label: "", key: "blue", points: d }];   // one bare series
+      else if (d?.points) d = [d];
+      return asRows(d, ["points"]).map((s) => ({ ...s, points: (s.points ?? s.values ?? []).map((p) => num(p && typeof p === "object" ? p.value : p)).filter(Number.isFinite) })).filter((s) => s.points.length);
+    },
+    heatmap: (d) => { const l = asRows(d, ["cells"]), n = Math.max(0, ...l.map((r) => r.cells?.length ?? 0)); return n ? l.map((r) => ({ ...r, cells: Array.from({ length: n }, (_, i) => pos(r.cells?.[i])) })) : []; },
+    timeline: (d) => asRows(d, ["start", "end"]).map((r) => { const [start, end] = span2(n0(r.start), n0(r.end)); return { ...r, start, end }; }),
+    ticks: (d) => asRows(d, ["events"]).map((r) => ({ ...r, events: (r.events ?? []).map(num).filter(Number.isFinite) })),
+    spans: (d) => asRows(d, ["start", "end"]).map((r) => { const [start, end] = span2(n0(r.start), n0(r.end)); return { ...r, start, end }; }),
+    lanes: (d) => asRows(d, ["spans"]).map((r) => ({ ...r, spans: (r.spans ?? []).map((s) => span2(num(s?.[0]), num(s?.[1]))).filter((s) => s.every(Number.isFinite)) })).filter((r) => r.spans.length),
+    gantt: (d) => asRows(d, ["start", "end", "done"]).map((r) => { const [start, end] = span2(when(r.start), when(r.end)), dn = n0(r.done); return { ...r, start, end, done: Math.min(1, Math.max(0, dn > 1 ? dn / 100 : dn)) }; }).filter((r) => Number.isFinite(r.start) && Number.isFinite(r.end)),
+    status: (d) => asRows(d, ["runs"]).map((r) => ({ ...r, runs: (r.runs ?? []).map((x) => x == null || x === "" ? null : ST[String(x).toLowerCase()] ?? null) })),
+    dist: (d) => (Array.isArray(d) ? d : Object.values(d ?? {})).map((v) => num(v && typeof v === "object" ? v.value : v)).filter(Number.isFinite),
+    scatter: (d) => (Array.isArray(d) ? d : []).map((p) => Array.isArray(p) ? { x: p[0], y: p[1], label: p[2] } : p).filter((p) => p && typeof p === "object")
+      .map((p) => ({ ...p, x: num(p.x), y: num(p.y) })).filter((p) => Number.isFinite(p.x) && Number.isFinite(p.y)),
+    change: (d) => asRows(d, ["before", "after"]).map((r) => ({ ...r, before: pos(r.before), after: pos(r.after) })),
+    dumbbell: (d) => asRows(d, ["from", "to"]).map((r) => ({ ...r, from: n0(r.from), to: n0(r.to) })),
+  };
+  const WIDE = new Set(["strip", "treemap", "columns", "line", "heatmap", "timeline", "ticks", "spans", "lanes", "gantt", "status", "dist", "scatter", "change", "table"]);
+  const RAW = new Set(["fmt", "color", "keys", "spark", "header", "footer"]);   // these don't take an element first
+  Object.keys(V).forEach((k) => {
+    const fn = V[k];
+    if (typeof fn !== "function" || RAW.has(k)) return;
+    V[k] = (el, data, ...rest) => {
+      el = el instanceof Element ? el : null;
+      try {
+        if (WIDE.has(k) && el?.classList.contains("v-panel") && el.dataset.wide !== "false") el.classList.add("v-wide");
+        if (NORM[k]) { data = NORM[k](data); if (!data.length) return V.empty(el, "no data"); }
+        return fn(el, data, ...rest);
+      } catch (e) {
+        console.error(`V.${k}`, e);
+        at(el).append(h(`<div class="v-note" style="color:var(--red)">V.${k} couldn't draw this: ${esc(e.message)}</div>`));
+      }
+    };
+  });
+  /* ── Lint ────────────────────────────────────────────────────
+     Runs once after the build. Findings go to the console, which html_preview returns, so the agent sees them
+     before it renders. Nothing here changes the page. */
+  const FINDING = /\d|\b(is|are|was|were|has|have|had|grew|grows|fell|falls|rose|dropped|doubled|halved|takes?|took|uses?|used|spent|spends|costs?|cost|beats?|than|most|least|only|more|less|fewer|still|now|never|always|all|none|every|biggest|largest|smallest|slowest|fastest|half|third|quarter|twice|up|down|over|under)\b/i;
+  const lint = () => {
+    const warn = (m) => console.warn(`visualize: ${m}`);
+    const t = root.querySelector(".v-title")?.textContent ?? "";
+    if (!t) warn("no title. Start with V.header(finding, dek).");
+    else if (t.split(/\s+/).length < 4 || !FINDING.test(t)) warn(`the title "${t}" reads like a label. State the finding in one sentence, with the number that proves it (e.g. "C: is 81% full, and a third of it is one Steam library").`);
+    if (t && !root.querySelector(".v-dek")) warn("no deck. Pass scope · window · source as the second argument of V.header.");
+    if (!root.querySelector(".v-foot")) warn("no footer. End with V.footer(bold, light, source).");
+    root.querySelectorAll(".v-panel").forEach((p) => { if (p.children.length < 2) warn(`panel "${p.querySelector("h2")?.firstChild?.textContent ?? ""}" is empty. Draw into it or use V.empty(panel, why).`); });
+    const MARK = "/* ── " + "Build", src = [...document.scripts].map((x) => x.text).filter((x) => x.includes("V.")).join("\n"), b = src.includes(MARK) ? src.split(MARK)[1] : src;
+    if (/#[0-9a-f]{3,8}\b/i.test(b)) warn("hex color in the build. Use keys (V.keys({name:\"blue\"})) instead.");
+    if (/font-?family|<style|\.style\b|style\s*=|innerHTML|createElement/i.test(b)) warn("styling or DOM work in the build. Use only V.* helpers; the house style lives in the library.");
+    if (purge() || purged) warn("a stylesheet on the page tried to restyle the library or change the font, and was removed. The house style and Paper Mono are locked; delete it.");
+    const tf = root.querySelector(".v-title, .v-panel h2");
+    if (tf && !/^"?PM/.test(getComputedStyle(tf).fontFamily)) warn("text is not in Paper Mono. Remove whatever sets the font.");
+    const over = document.documentElement.scrollWidth - innerWidth;
+    if (over > 1) warn(`the page is ${over}px wider than the frame. Shorten long labels or values, or split the panel.`);
+  };
+  setTimeout(lint);
+  const spark = V.spark;
+  V.spark = (values, key, o) => spark((Array.isArray(values) ? values : []).map(num).filter(Number.isFinite), key, o);
+  return V;
+})();
+
+
+window.V = V;
+if (typeof build === "function") {
+  try { build(); } catch (e) { console.error("visualize: build() threw", e); V.note(null, `build() threw: ${e.message}`); }
+} else console.warn("visualize: no build() function on the page. Put every V.* call inside function build() { ... }.");
+
+]]></desc></svg>
