@@ -23,6 +23,7 @@ fetch("C:/Users/chris/.agents/skills/visualize/assets/v.svg").then((r) => r.text
 ```
 
 ## Rules
+- Every dither fill is dithercn's bayer4 coverage mask, built into the library. Never write dither CSS of your own.
 - All text is Paper Mono (installed locally; the library sets it). Never add a font.
 - Only `V.*` calls inside `build()`. No `<style>`, style attributes, hex colors or DOM code. Never open or copy the library.
 - Use real data. If something can't be measured, say so in the deck.
