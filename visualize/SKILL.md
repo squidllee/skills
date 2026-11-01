@@ -18,7 +18,7 @@ function build() {
   V.bars(V.panel(g, "Largest folders", "GB on disk"), {Steam: 244e9, Users: 121e9}, {format:"bytes"});
   V.footer("disk", "board", "du + Get-PSDrive");
 }
-fetch("C:/Users/chris/.claude/skills/visualize/assets/v.svg").then((r) => r.text()).then((t) => (0, eval)(t.split("<![CDATA[")[1].split("]]>")[0]));
+fetch("C:/Users/chris/.agents/skills/visualize/assets/v.svg").then((r) => r.text()).then((t) => (0, eval)(t.split("<![CDATA[")[1].split("]]>")[0]));
 </script>
 ```
 
