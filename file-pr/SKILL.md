@@ -38,6 +38,25 @@ changes, for example `Created with <model> in <harness>.` Include subagent
 models that wrote part of the change. Use the model name the harness reports.
 If model identity is unavailable, name the harness without guessing a model.
 
+## Screenshots, GIFs and other media
+
+GitHub has no upload API, but images and GIFs still go in the description: never
+say you cannot, and never commit them. A UI PR that requires before/after proof
+is not ready without it.
+
+1. Save PNGs for stills and GIFs for motion. Videos do not play inline, so
+   convert: `ffmpeg -i in.mp4 -vf "fps=12,scale=800:-1:flags=lanczos" -loop 0 out.gif`
+   (keep each under about 10 MB).
+2. Run `node scripts/upload-media.mjs --title "<repo> PR evidence" before.png after.png demo.gif`
+   from this skill's directory. It pushes the files to one secret gist, checks
+   every URL serves, and prints a markdown image line per file. Exit 1 means
+   fix the error; do not fall back to another host (anonymous here.now links
+   expire after 24 hours).
+3. Paste the lines into the description under **Before** and **After**, then
+   confirm with `gh pr view <n> --json body --jq .body` after creating the PR.
+
+Check each image first: a real library or token on screen means re-capture on seed data.
+
 Before submission, check the title, description, quotes, and attachments for
 secrets and private details.
 
