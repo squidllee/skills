@@ -1,1 +1,0 @@
-../../../.cubic-plugin/plugin-source/skills/cubic-loop/SKILL.md
