@@ -23,7 +23,7 @@ fetch("C:/Users/chris/.agents/skills/visualize/assets/v.svg").then((r) => r.text
 ```
 
 ## Rules
-- Every dither fill is dithercn's bayer4 coverage mask, built into the library. Never write dither CSS of your own.
+- Every fill is dithercn (dithercn.dev): bayer8 (64 tones) thresholded on even 2px cells, built into the library. Bars, columns and treemap tiles are stepped ramps, densest at the tip under a solid 2px cap; line areas ramp down from the line; flat levels (heatmap, idle, empty) are 25/50/75% masks. Never write dither CSS of your own.
 - All text is Paper Mono (installed locally; the library sets it). Never add a font.
 - Only `V.*` calls inside `build()`. No `<style>`, style attributes, hex colors or DOM code. Never open or copy the library.
 - Use real data. If something can't be measured, say so in the deck.

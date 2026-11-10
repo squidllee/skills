@@ -47,11 +47,13 @@ is not ready without it.
 1. Save PNGs for stills and GIFs for motion. Videos do not play inline, so
    convert: `ffmpeg -i in.mp4 -vf "fps=12,scale=800:-1:flags=lanczos" -loop 0 out.gif`
    (keep each under about 10 MB).
-2. Run `node scripts/upload-media.mjs --title "<repo> PR evidence" before.png after.png demo.gif`
-   from this skill's directory. It pushes the files to one secret gist, checks
-   every URL serves, and prints a markdown image line per file. Exit 1 means
-   fix the error; do not fall back to another host (anonymous here.now links
-   expire after 24 hours).
+2. Run `node scripts/upload-media.mjs --title "<repo> PR evidence" <absolute path to each file>`
+   from this skill's directory. Use absolute paths: relative ones resolve against
+   this directory, so a bare `before.png` will not find the screenshot. The
+   script pushes the files to one secret gist, checks every URL serves, and
+   prints a markdown image line per file. Exit 1 means fix the error and rerun
+   the whole command; the script has already deleted its gist. Do not fall back
+   to another host (anonymous here.now links expire after 24 hours).
 3. Paste the lines into the description under **Before** and **After**, then
    confirm with `gh pr view <n> --json body --jq .body` after creating the PR.
 

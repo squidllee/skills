@@ -25,6 +25,9 @@ const fail = (message) => {
 const run = (cmd, args, options = {}) =>
   execFileSync(cmd, args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], ...options }).trim();
 
+const errorText = (error) =>
+  error instanceof Error ? error.stderr?.toString().trim() || error.message : String(error);
+
 const args = process.argv.slice(2);
 let title = "PR media";
 const files = [];
@@ -55,14 +58,19 @@ const named = files.map((file) => {
   return { file, ext, name: `${stem}-${hash}${ext}` };
 });
 
-const gist = JSON.parse(
-  run("gh", [
-    "api", "gists", "-X", "POST",
-    "-f", `description=${title}`,
-    "-F", "public=false",
-    "-f", "files[README.md][content]=PR media. Safe to delete once the PR is merged.",
-  ]),
-);
+let gist;
+try {
+  gist = JSON.parse(
+    run("gh", [
+      "api", "gists", "-X", "POST",
+      "-f", `description=${title}`,
+      "-F", "public=false",
+      "-f", "files[README.md][content]=PR media. Safe to delete once the PR is merged.",
+    ]),
+  );
+} catch (error) {
+  fail(`could not create a gist. If gh lacks the gist scope, run \`gh auth refresh -s gist\`.\n${errorText(error)}`);
+}
 const login = gist.owner.login;
 
 const work = mkdtempSync(join(tmpdir(), "pr-media-"));
@@ -85,6 +93,7 @@ try {
   const sha = git("rev-parse", "HEAD");
 
   const base = `https://gist.githubusercontent.com/${login}/${gist.id}/raw/${sha}`;
+  const lines = [];
   let broken = false;
   for (const { ext, name } of named) {
     const url = `${base}/${name}`;
@@ -97,20 +106,30 @@ try {
       type = res?.headers.get("content-type") ?? "";
       ok = res?.ok === true;
     }
-    if (!ok) broken = true;
     console.error(`${ok ? "ok" : "NOT SERVING"} ${type} ${name}`);
-    if (IMAGE.has(ext)) console.log(`![${name}](${url})`);
+    if (!ok) {
+      broken = true;
+      continue;
+    }
+    if (IMAGE.has(ext)) lines.push(`![${name}](${url})`);
     else {
       console.error(`${name} is a video: GitHub will not play it inline from here. Convert it to a GIF for the PR body.`);
-      console.log(`[${name}](${url})`);
+      lines.push(`[${name}](${url})`);
     }
   }
+  if (broken) throw new Error("some URLs did not serve; nothing was printed for the PR body");
+  for (const line of lines) console.log(line);
   console.error(`gist: https://gist.github.com/${login}/${gist.id}`);
-  if (broken) fail("some URLs did not serve; do not put them in the PR");
 } catch (error) {
-  // A failed push leaves an empty gist behind; remove it.
-  try { run("gh", ["gist", "delete", gist.id, "--yes"]); } catch {}
-  fail(error instanceof Error ? (error.stderr?.toString().trim() || error.message) : String(error));
+  // Any failure after the gist exists deletes it, so a rerun does not leave a stray gist behind.
+  console.error(`upload-media: ${errorText(error)}`);
+  try {
+    run("gh", ["gist", "delete", gist.id, "--yes"]);
+    console.error("upload-media: deleted the gist; rerun the whole command");
+  } catch {
+    console.error(`upload-media: could not delete https://gist.github.com/${login}/${gist.id}; delete it by hand`);
+  }
+  process.exitCode = 1;
 } finally {
   rmSync(work, { recursive: true, force: true });
 }
